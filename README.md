@@ -15,3 +15,4 @@ es un `.html` que monta un componente JSX.
 python3 -m http.server 8848
 # http://127.0.0.1:8848/Home.html
 ```
+# web
