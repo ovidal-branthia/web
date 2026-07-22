@@ -51,34 +51,55 @@ const STATS = [
 
 function Nav() {
   const w = useW();
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const mobile = w < BP.md;
   return (
-    <header style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      padding: w < BP.sm ? "18px 20px" : "22px 28px", color: "var(--fg)",
-      background: "var(--bg)",
-    }}>
-      <a href="Home.html" aria-label="Branthia — inicio" style={{ color: "inherit", display: "flex", alignItems: "center" }}>
-        <window.BranthiaLogo height={24} />
-      </a>
-      {w >= BP.md && (
-        <nav style={{ display: "flex", gap: 28 }}>
-          {NAV.map(([l, h]) => (
-            <a key={l} href={h} style={{
-              color: "inherit", textDecoration: "none", fontSize: 14, fontWeight: 500,
-              opacity: l === "Estudio" ? 1 : 0.78,
-            }}>{l}</a>
-          ))}
-        </nav>
-      )}
-      <a href="Home.html#contacto" style={{
-        color: "var(--bg)", background: "var(--fg)", textDecoration: "none",
-        padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 600,
-        display: "inline-flex", alignItems: "center", gap: 10,
+    <>
+      <header style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: mobile ? "18px 20px" : "22px 28px", color: "var(--fg)",
+        background: "var(--bg)",
       }}>
-        Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
-      </a>
-    </header>
+        <a href="Home.html" aria-label="Branthia — inicio" style={{ color: "inherit", display: "flex", alignItems: "center" }}>
+          <window.BranthiaLogo height={24} />
+        </a>
+        {!mobile && (
+          <nav style={{ display: "flex", gap: 28 }}>
+            {NAV.map(([l, h]) => (
+              <a key={l} href={h} style={{ color: "inherit", textDecoration: "none", fontSize: 14, fontWeight: 500, opacity: l === "Estudio" ? 1 : 0.78 }}>{l}</a>
+            ))}
+          </nav>
+        )}
+        {mobile ? (
+          <button onClick={() => setMenuOpen(true)} aria-label="Abrir menú" style={{ appearance: "none", border: "none", background: "transparent", color: "inherit", display: "flex", flexDirection: "column", gap: 5, padding: 6, cursor: "pointer" }}>
+            <span style={{ width: 24, height: 2, background: "currentColor", display: "block" }} />
+            <span style={{ width: 24, height: 2, background: "currentColor", display: "block" }} />
+          </button>
+        ) : (
+          <a href="Home.html#contacto" style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 10 }}>
+            Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
+          </a>
+        )}
+      </header>
+
+      {mobile && menuOpen && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 100, background: "var(--bg)", color: "var(--fg)", display: "flex", flexDirection: "column", padding: "18px 20px 32px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <window.BranthiaLogo height={24} />
+            <button onClick={() => setMenuOpen(false)} aria-label="Cerrar menú" style={{ appearance: "none", border: "none", background: "transparent", color: "inherit", fontSize: 26, lineHeight: 1, cursor: "pointer", padding: 6 }}>✕</button>
+          </div>
+          <nav style={{ display: "flex", flexDirection: "column", gap: 2, margin: "auto 0" }}>
+            {NAV.map(([l, h]) => (
+              <a key={l} href={h} onClick={() => setMenuOpen(false)} style={{ color: "inherit", textDecoration: "none", fontFamily: "var(--display)", fontWeight: 800, fontSize: "clamp(32px, 8.5vw, 52px)", letterSpacing: "-0.03em", lineHeight: 1.12, padding: "6px 0" }}>{l}<span style={{ color: "var(--accent)" }}>.</span></a>
+            ))}
+          </nav>
+          <a href="Home.html#contacto" onClick={() => setMenuOpen(false)} style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "16px 22px", borderRadius: 999, fontSize: 16, fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+            Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
+          </a>
+        </div>
+      )}
+    </>
   );
 }
 

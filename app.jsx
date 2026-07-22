@@ -62,51 +62,97 @@ const BP = { sm: 640, md: 1024 };   // < sm = móvil · < md = tablet · ≥ md 
 // ---------------------------------------------------------------------------
 // Nav
 // ---------------------------------------------------------------------------
+const NAV_LINKS = [
+  ["Servicios", "#territorios"],
+  ["IA", "#ia"],
+  ["Estudio", "Estudio.html"],
+  ["Soluciones", "#hub"],
+  ["Clientes", "#clientes"],
+  ["Manifesto", "#manifesto"],
+  ["Contacto", "#contacto"],
+];
+
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const w = useW();
+  const mobile = w < BP.md;
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", on);
     return () => window.removeEventListener("scroll", on);
   }, []);
   return (
-    <header style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      padding: scrolled ? (w < BP.sm ? "12px 20px" : "14px 28px") : (w < BP.sm ? "18px 20px" : "22px 28px"),
-      color: scrolled ? "var(--bg)" : "var(--fg)",
-      background: scrolled ? "var(--fg)" : "transparent",
-      backdropFilter: scrolled ? "blur(12px) saturate(140%)" : "none",
-      borderBottom: scrolled ? "1px solid transparent" : "1px solid transparent",
-      transition: "all .3s ease",
-    }}>
-      <a href="#top" style={{ color: "inherit", textDecoration: "none", display: "flex", alignItems: "center" }} aria-label="Branthia — inicio">
-        <BranthiaLogo height={scrolled ? 20 : 24} />
-      </a>
-      {w >= BP.md && (
-        <nav style={{ display: "flex", gap: 28 }}>
-          {[
-            ["Servicios", "#territorios"],
-            ["IA", "#ia"],
-            ["Estudio", "Estudio.html"],
-            ["Soluciones", "#hub"],
-            ["Clientes", "#clientes"],
-            ["Manifesto", "#manifesto"],
-            ["Contacto", "#contacto"],
-          ].map(([l, h]) => (
-            <a key={l} href={h} style={{ color: "inherit", textDecoration: "none", fontSize: 14, fontWeight: 500, opacity: 0.78 }}>{l}</a>
-          ))}
-        </nav>
-      )}
-      <a href="#contacto" style={{
-        color: scrolled ? "var(--fg)" : "var(--bg)", background: scrolled ? "var(--bg)" : "var(--fg)", textDecoration: "none",
-        padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 600,
-        display: "inline-flex", alignItems: "center", gap: 10, transition: "all .3s ease",
+    <>
+      <header style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: scrolled ? (mobile ? "12px 20px" : "14px 28px") : (mobile ? "18px 20px" : "22px 28px"),
+        color: scrolled ? "var(--bg)" : "var(--fg)",
+        background: scrolled ? "var(--fg)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px) saturate(140%)" : "none",
+        transition: "all .3s ease",
       }}>
-        Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
-      </a>
-    </header>
+        <a href="#top" style={{ color: "inherit", textDecoration: "none", display: "flex", alignItems: "center" }} aria-label="Branthia — inicio">
+          <BranthiaLogo height={scrolled ? 20 : 24} />
+        </a>
+        {!mobile && (
+          <nav style={{ display: "flex", gap: 28 }}>
+            {NAV_LINKS.map(([l, h]) => (
+              <a key={l} href={h} style={{ color: "inherit", textDecoration: "none", fontSize: 14, fontWeight: 500, opacity: 0.78 }}>{l}</a>
+            ))}
+          </nav>
+        )}
+        {mobile ? (
+          <button onClick={() => setMenuOpen(true)} aria-label="Abrir menú" style={{
+            appearance: "none", border: "none", background: "transparent", color: "inherit",
+            display: "flex", flexDirection: "column", gap: 5, padding: 6, cursor: "pointer",
+          }}>
+            <span style={{ width: 24, height: 2, background: "currentColor", display: "block" }} />
+            <span style={{ width: 24, height: 2, background: "currentColor", display: "block" }} />
+          </button>
+        ) : (
+          <a href="#contacto" style={{
+            color: scrolled ? "var(--fg)" : "var(--bg)", background: scrolled ? "var(--bg)" : "var(--fg)", textDecoration: "none",
+            padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 600,
+            display: "inline-flex", alignItems: "center", gap: 10, transition: "all .3s ease",
+          }}>
+            Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
+          </a>
+        )}
+      </header>
+
+      {mobile && menuOpen && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 100, background: "var(--bg)", color: "var(--fg)",
+          display: "flex", flexDirection: "column", padding: "18px 20px 32px",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <BranthiaLogo height={24} />
+            <button onClick={() => setMenuOpen(false)} aria-label="Cerrar menú" style={{
+              appearance: "none", border: "none", background: "transparent", color: "inherit",
+              fontSize: 26, lineHeight: 1, cursor: "pointer", padding: 6,
+            }}>✕</button>
+          </div>
+          <nav style={{ display: "flex", flexDirection: "column", gap: 2, margin: "auto 0" }}>
+            {NAV_LINKS.map(([l, h]) => (
+              <a key={l} href={h} onClick={() => setMenuOpen(false)} style={{
+                color: "inherit", textDecoration: "none",
+                fontFamily: "var(--display)", fontWeight: 800, fontSize: "clamp(32px, 8.5vw, 52px)",
+                letterSpacing: "-0.03em", lineHeight: 1.12, padding: "6px 0",
+              }}>{l}<span style={{ color: "var(--accent)" }}>.</span></a>
+            ))}
+          </nav>
+          <a href="#contacto" onClick={() => setMenuOpen(false)} style={{
+            color: "var(--bg)", background: "var(--fg)", textDecoration: "none",
+            padding: "16px 22px", borderRadius: 999, fontSize: 16, fontWeight: 600,
+            display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
+          }}>
+            Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
+          </a>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -152,7 +198,7 @@ function Hero({ heroMode, iaThread }) {
             Barcelona · Remote<br />41.2237° N, 1.7256° E
           </div>
         </div>
-        <div style={{ textAlign: "right" }}>
+        <div style={{ textAlign: w < BP.sm ? "left" : "right" }}>
           <Mono style={{ color: "var(--muted)" }}>MMXXVI — V.01</Mono>
           <div style={{ marginTop: 10, fontSize: 14, lineHeight: 1.4 }}>
             Consultora de IA.<br />Y estudio de producto.
@@ -471,19 +517,21 @@ function Etymon({ label, body }) {
 // Marquee
 // ---------------------------------------------------------------------------
 function Marquee() {
+  const w = useW();
+  const sm = w < BP.sm;
   const words = ["Automatización con IA", "Sistemas agénticos", "Evals & fiabilidad", "RAG sobre tu dato", "Diagnóstico IA", "Producto digital", "UX/UI", "Sistemas de diseño", "Go-to-market", "Generación de demanda", "Marketing automation", "Naming & identidad", "Contenido a escala"];
   const line = words.join("   ·   ");
   return (
-    <section style={{ borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)", overflow: "hidden", padding: "20px 0", background: "var(--bg)" }}>
-      <div style={{ display: "flex", gap: 0, whiteSpace: "nowrap", animation: "scrollX 38s linear infinite" }}>
-        {[0,1,2].map(i => (
+    <section style={{ borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)", overflow: "hidden", padding: sm ? "11px 0" : "20px 0", background: "var(--bg)" }}>
+      <div style={{ display: "flex", gap: 0, whiteSpace: "nowrap", animation: sm ? "scrollX 15s linear infinite" : "scrollX 30s linear infinite" }}>
+        {[0,1].map(i => (
           <span key={i} style={{
             fontFamily: "var(--display)",
-            fontWeight: 900,
-            fontSize: "clamp(30px, 4.4vw, 64px)",
+            fontWeight: sm ? 600 : 900,
+            fontSize: sm ? 15 : "clamp(30px, 4.4vw, 64px)",
             lineHeight: 1,
-            letterSpacing: "-0.045em",
-            paddingRight: 60,
+            letterSpacing: sm ? "0" : "-0.045em",
+            paddingRight: sm ? 24 : 60,
           }}>
             {line}   <span style={{ color: "var(--accent)" }}>·</span>&nbsp;
           </span>
@@ -529,7 +577,7 @@ const TERRITORIOS = [
 function Territorios() {
   const w = useW();
   return (
-    <section id="territorios" style={{ padding: w < BP.sm ? "100px 20px 60px" : "140px 28px 80px" }}>
+    <section id="territorios" style={{ padding: w < BP.sm ? "60px 20px 44px" : "140px 28px 80px" }}>
       <SectionHeader index="§ I" eyebrow="Tres territorios · un motor de IA" title="Una sola disciplina, tres acentos." />
       <div style={{ display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : "120px 1fr", gap: 32, marginTop: 28 }}>
         <div />
@@ -537,7 +585,7 @@ function Territorios() {
           Consultoría, producto y marca son los tres acentos. La <span style={{ color: "var(--fg)", fontWeight: 600 }}>IA es el motor</span> que los mueve a los tres — no un servicio aparte, sino la forma en que hoy hacemos cada uno.
         </p>
       </div>
-      <div style={{ display: "grid", gap: 0, marginTop: 56 }}>
+      <div style={{ display: "grid", gap: 0, marginTop: w < BP.sm ? 32 : 56 }}>
         {TERRITORIOS.map((t, i) => <TerritorioRow key={t.n} t={t} idx={i} />)}
       </div>
     </section>
@@ -629,13 +677,13 @@ function SectionHeader({ index, eyebrow, title }) {
   const w = useW();
   return (
     <div style={{ display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : "120px 1fr", gap: w < BP.sm ? 10 : 32 }}>
-      <Mono style={{ color: "var(--muted)" }}>{index}</Mono>
+      <Mono style={{ color: "var(--muted)", fontSize: 14 }}>{index}</Mono>
       <div>
-        <Mono style={{ color: "var(--muted)" }}>{eyebrow}</Mono>
+        <Mono style={{ color: "var(--muted)", fontSize: 14 }}>{eyebrow}</Mono>
         <h2 style={{
           fontFamily: "var(--display)", fontWeight: 900,
           fontSize: "clamp(42px, 6vw, 96px)", lineHeight: 0.92,
-          letterSpacing: "-0.045em", margin: "10px 0 0", maxWidth: "16ch",
+          letterSpacing: "-0.045em", margin: "12px 0 0", maxWidth: "16ch",
         }}>{title}</h2>
       </div>
     </div>
@@ -669,12 +717,12 @@ const IA_COLUMNAS = [
 function IAAplicada() {
   const w = useW();
   return (
-    <section id="ia" style={{ padding: w < BP.sm ? "100px 20px 60px" : "140px 28px 80px", borderTop: "1px solid var(--line)", position: "relative", overflow: "hidden" }}>
+    <section id="ia" style={{ padding: w < BP.sm ? "60px 20px 44px" : "140px 28px 80px", position: "relative", overflow: "hidden" }}>
       <SectionHeader index="§ II" eyebrow="Inteligencia aplicada" title="El hilo que cose los tres territorios." />
 
       {/* Stat block */}
       <div style={{
-        marginTop: 72,
+        marginTop: w < BP.sm ? 40 : 72,
         display: "grid",
         gridTemplateColumns: w < BP.md ? "1fr" : "minmax(320px, 1.1fr) 1fr",
         gap: w < BP.md ? 28 : 64,
@@ -717,20 +765,20 @@ function IAAplicada() {
 
       {/* Three columns mapped to the trinity */}
       <div style={{
-        marginTop: 96,
+        marginTop: w < BP.sm ? 48 : 96,
         display: "grid",
         gridTemplateColumns: w < BP.sm ? "1fr" : w < BP.md ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
         borderTop: "1px solid var(--line)",
       }}>
         {IA_COLUMNAS.map((c, i) => (
           <div key={c.pilar} style={{
-            padding: "36px 28px 32px",
-            borderRight: i < 2 ? "1px solid var(--line)" : "none",
+            padding: w < BP.sm ? "26px 20px 24px" : "36px 28px 32px",
+            borderRight: w >= BP.sm && i < 2 ? "1px solid var(--line)" : "none",
             borderBottom: "1px solid var(--line)",
             display: "flex",
             flexDirection: "column",
-            gap: 18,
-            minHeight: 360,
+            gap: 16,
+            minHeight: w < BP.sm ? 0 : 360,
           }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               <Mono style={{ color: "var(--muted)" }}>{`IA × ${c.pilar}`}</Mono>
@@ -771,8 +819,8 @@ function IAAplicada() {
           ["Stack", "OpenAI · Anthropic · open-source"],
         ].map(([k, v], i) => (
           <div key={k} style={{
-            padding: "28px 24px",
-            borderRight: i < 3 ? "1px solid var(--line)" : "none",
+            padding: w < BP.sm ? "20px 18px" : "28px 24px",
+            borderRight: (w < BP.md ? i % 2 === 0 : i < 3) ? "1px solid var(--line)" : "none",
             borderBottom: "1px solid var(--line)",
           }}>
             <Mono style={{ color: "var(--muted)" }}>{k}</Mono>
@@ -828,13 +876,13 @@ const BRANDS = [
 function Hub() {
   const w = useW();
   return (
-    <section id="hub" style={{ padding: w < BP.sm ? "100px 20px 60px" : "140px 28px 80px", background: "var(--bg)" }}>
+    <section id="hub" style={{ padding: w < BP.sm ? "60px 20px 44px" : "140px 28px 80px", background: "var(--bg)" }}>
       <SectionHeader index="§ III" eyebrow="El hub" title="Una constelación de marcas verticales." />
-      <div style={{ marginTop: 56, display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : w < BP.md ? "repeat(2, 1fr)" : "repeat(3, 1fr)", gap: 20 }}>
+      <div style={{ marginTop: w < BP.sm ? 32 : 56, display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : w < BP.md ? "repeat(2, 1fr)" : "repeat(3, 1fr)", gap: 20 }}>
         {BRANDS.map(b => <BrandCard key={b.key} b={b} />)}
       </div>
 
-      <div style={{ marginTop: 56, padding: "28px 0", borderTop: "1px solid var(--line)", display: "grid", gridTemplateColumns: w < BP.md ? "1fr" : "120px 1fr 1fr", gap: 32 }}>
+      <div style={{ marginTop: w < BP.sm ? 36 : 56, padding: "28px 0", borderTop: "1px solid var(--line)", display: "grid", gridTemplateColumns: w < BP.md ? "1fr" : "120px 1fr 1fr", gap: 32 }}>
         <Mono style={{ color: "var(--muted)" }}>Modelo</Mono>
         <div style={{ fontSize: 18, lineHeight: 1.45, maxWidth: 540 }}>
           Branthia es el estudio. Athria, Cohexia y las marcas que vendrán son los productos.
@@ -944,7 +992,14 @@ function BrandCard({ b }) {
             </div>
           );
         }
-        if (w < BP.md) return preview;
+        if (w < BP.md) return (
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <span style={{ fontFamily: "var(--display)", fontWeight: 900, fontSize: "clamp(40px, 12vw, 60px)", lineHeight: 0.85, letterSpacing: "-0.05em" }}>
+              {b.name}<span style={{ color: "var(--accent)" }}>.</span>
+            </span>
+            {preview}
+          </div>
+        );
         return (
           <div style={{ position: "relative", margin: "auto 0", width: "100%", minHeight: 200 }}>
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", opacity: hover ? 0 : 1, transition: "opacity .3s ease" }}>
@@ -960,9 +1015,11 @@ function BrandCard({ b }) {
       })()}
 
       <div>
-        <div style={{ fontFamily: "var(--display)", fontWeight: 800, fontSize: 28, letterSpacing: "-0.025em" }}>
-          {b.name}
-        </div>
+        {!(w < BP.md && (b.key === "athria" || b.key === "cohexia")) && (
+          <div style={{ fontFamily: "var(--display)", fontWeight: 800, fontSize: 28, letterSpacing: "-0.025em" }}>
+            {b.name}
+          </div>
+        )}
         <div style={{ fontSize: 14, opacity: 0.78, marginTop: 4 }}>{b.domain}</div>
         <p style={{ fontSize: 13, lineHeight: 1.45, marginTop: 14, opacity: 0.86 }}>{b.body}</p>
         <div style={{ display: "flex", gap: 14, marginTop: 14, paddingTop: 14, borderTop: `1px solid ${hover && !b.placeholder ? "rgba(241,236,226,0.22)" : "var(--line)"}` }}>
@@ -1003,7 +1060,7 @@ const CLIENTES = [
 function Clientes() {
   const w = useW();
   return (
-    <section id="clientes" style={{ padding: w < BP.sm ? "100px 20px 60px" : "140px 28px 80px", borderTop: "1px solid var(--line)" }}>
+    <section id="clientes" style={{ padding: w < BP.sm ? "60px 20px 44px" : "140px 28px 80px", borderTop: "1px solid var(--line)" }}>
       <SectionHeader index="§ IV" eyebrow="Clientes" title="Trayectoria detrás de Branthia." />
 
       <div style={{ display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : "120px 1fr", gap: 32, marginTop: 32 }}>
@@ -1020,11 +1077,19 @@ function Clientes() {
 
 function ClientesGrid() {
   const w = useW();
+  // Móvil → índice editorial en lista. Desktop → grid de tarjetas (original).
+  if (w < BP.md) {
+    return (
+      <div style={{ marginTop: 44, borderTop: "1px solid var(--line)" }}>
+        {CLIENTES.map((c, i) => <ClienteRow key={c.name} c={c} idx={i} />)}
+      </div>
+    );
+  }
   return (
     <div style={{
-      marginTop: 64,
+      marginTop: 72,
       display: "grid",
-      gridTemplateColumns: w < 480 ? "1fr" : w < BP.md ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
+      gridTemplateColumns: "repeat(3, 1fr)",
       borderTop: "1px solid var(--line)",
       borderLeft: "1px solid var(--line)",
     }}>
@@ -1033,6 +1098,29 @@ function ClientesGrid() {
   );
 }
 
+// Móvil: fila de índice editorial (créditos), sin el punto de acento (reservado
+// a las marcas propias).
+function ClienteRow({ c, idx }) {
+  const num = String(idx + 1).padStart(2, "0");
+  return (
+    <div style={{ padding: "20px 2px", borderBottom: "1px solid var(--line)" }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+        <Mono style={{ color: "var(--muted)", opacity: 0.55, flexShrink: 0 }}>{num}</Mono>
+        <span style={{
+          fontFamily: "var(--display)", fontWeight: 600,
+          fontSize: 22, letterSpacing: "-0.025em", lineHeight: 1,
+        }}>
+          {c.name}
+        </span>
+      </div>
+      <div style={{ marginTop: 9, marginLeft: 34, fontSize: 13, lineHeight: 1.45, color: "var(--muted)" }}>
+        <span style={{ color: "var(--fg)" }}>{c.sector}</span>{c.scope ? ` — ${c.scope}` : ""}
+      </div>
+    </div>
+  );
+}
+
+// Desktop: tarjeta original (wordmark grande con punto de acento).
 function ClienteCell({ c, idx }) {
   const [hover, setHover] = useState(false);
   return (
@@ -1042,68 +1130,36 @@ function ClienteCell({ c, idx }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        position: "relative",
-        display: "block",
+        position: "relative", display: "block",
         padding: "40px 28px 28px",
-        borderRight: "1px solid var(--line)",
-        borderBottom: "1px solid var(--line)",
-        textDecoration: "none",
-        color: "var(--fg)",
+        borderRight: "1px solid var(--line)", borderBottom: "1px solid var(--line)",
+        textDecoration: "none", color: "var(--fg)",
         background: hover ? "var(--fg)" : "transparent",
         transition: "background .3s ease",
-        minHeight: 220,
-        overflow: "hidden",
+        minHeight: 220, overflow: "hidden",
       }}
     >
-      {/* index tag */}
-      <div style={{
-        position: "absolute", top: 14, left: 14,
-        color: hover ? "var(--bg)" : "var(--muted)",
-        opacity: 0.6,
-      }}>
+      <div style={{ position: "absolute", top: 14, left: 14, color: hover ? "var(--bg)" : "var(--muted)", opacity: 0.6 }}>
         <Mono>{String(idx + 1).padStart(2, "0")}</Mono>
       </div>
       <div style={{
-        position: "absolute", top: 14, right: 14,
-        color: hover ? "var(--bg)" : "var(--muted)",
-        opacity: 0.6,
-      }}>
-        <Mono>{c.year}</Mono>
-      </div>
-
-      {/* wordmark */}
-      <div style={{
-        fontFamily: "var(--display)",
-        fontWeight: 900,
-        fontSize: "clamp(40px, 4.4vw, 64px)",
-        lineHeight: 1,
-        letterSpacing: "-0.04em",
-        marginTop: 16,
-        color: hover ? "var(--bg)" : "var(--fg)",
+        fontFamily: "var(--display)", fontWeight: 900,
+        fontSize: "clamp(40px, 4.4vw, 64px)", lineHeight: 1.02, letterSpacing: "-0.03em",
+        marginTop: 16, color: hover ? "var(--bg)" : "var(--fg)",
         transition: "color .25s, transform .35s cubic-bezier(.2,.7,.2,1)",
         transform: hover ? "translateX(-2px)" : "translateX(0)",
       }}>
         {c.name}<span style={{ color: "var(--accent)" }}>.</span>
       </div>
-
-      {/* sector */}
-      <div style={{
-        marginTop: 12,
-        fontSize: 13, lineHeight: 1.4,
-        color: hover ? "rgba(241,236,226,0.7)" : "var(--muted)",
-      }}>
+      <div style={{ marginTop: 12, fontSize: 13, lineHeight: 1.4, color: hover ? "rgba(241,236,226,0.7)" : "var(--muted)" }}>
         {c.scope ? `${c.sector} — ${c.scope}` : c.sector}
       </div>
-
-      {/* hover CTA */}
       <div style={{
         position: "absolute", left: 28, right: 28, bottom: 18,
         display: "flex", justifyContent: "space-between", alignItems: "center",
         color: hover ? "var(--bg)" : "var(--fg)",
-        opacity: hover ? 1 : 0,
-        transform: hover ? "translateY(0)" : "translateY(6px)",
-        transition: "opacity .25s, transform .25s",
-        pointerEvents: "none",
+        opacity: hover ? 1 : 0, transform: hover ? "translateY(0)" : "translateY(6px)",
+        transition: "opacity .25s, transform .25s", pointerEvents: "none",
       }}>
         <Mono>Caso de éxito</Mono>
         <span style={{ fontSize: 14, fontWeight: 600 }}>Próximamente →</span>
@@ -1118,9 +1174,9 @@ function ClienteCell({ c, idx }) {
 function Manifesto() {
   const w = useW();
   return (
-    <section id="manifesto" style={{ padding: w < BP.sm ? "100px 20px" : "140px 28px", position: "relative" }}>
+    <section id="manifesto" style={{ padding: w < BP.sm ? "60px 20px 48px" : "140px 28px", position: "relative" }}>
       <SectionHeader index="§ V" eyebrow="Manifesto" title="Cómo trabajamos, en voz alta." />
-      <div style={{ marginTop: 64, display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : "120px 1fr", gap: 32 }}>
+      <div style={{ marginTop: w < BP.sm ? 36 : 64, display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : "120px 1fr", gap: 32 }}>
         <div />
         <div style={{
           fontFamily: "var(--display)", fontWeight: 600,
@@ -1133,9 +1189,9 @@ function Manifesto() {
         </div>
       </div>
 
-      <div style={{ marginTop: 80, display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : w < BP.md ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 20, borderTop: "1px solid var(--line)", paddingTop: 32 }}>
+      <div style={{ marginTop: w < BP.sm ? 40 : 80, display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : w < BP.md ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: w < BP.sm ? 28 : 20, borderTop: "1px solid var(--line)", paddingTop: w < BP.sm ? 28 : 32 }}>
         {[
-          ["Despacio", "Construimos para diez años, no para el sprint que viene."],
+          ["Despacio", "Construimos cimientos que sobreviven al modelo de turno, no al hype de este trimestre."],
           ["Vertical", "Nicho profundo antes que mercado ancho. Athria y Cohexia hablan el idioma de su gente."],
           ["Tipográfico", "El sistema antes que la decoración. Si la tipografía no aguanta, nada aguanta."],
           ["Compuesto", "Un solo equipo, tres acentos. Producto, consultoría y marca, sin handoffs."],
@@ -1155,63 +1211,196 @@ function Manifesto() {
 // ---------------------------------------------------------------------------
 // CTA / Contact
 // ---------------------------------------------------------------------------
+const TIPOS_PROYECTO = ["Consultoría IA", "Producto", "Marca", "Otro"];
+
 function Contact() {
-  const [hover, setHover] = useState(false);
   const w = useW();
+  const sm = w < BP.sm;
+  const [f, setF] = useState({ nombre: "", email: "", empresa: "", tipo: "", mensaje: "", consent: false, website: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | ok | error
+  const [err, setErr] = useState("");
+
+  const set = (k) => (e) => {
+    const v = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    setF((s) => ({ ...s, [k]: v }));
+  };
+
+  async function submit(e) {
+    e.preventDefault();
+    setErr("");
+    if (!f.nombre.trim() || !f.email.trim() || !f.mensaje.trim()) { setErr("Completa nombre, email y mensaje."); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) { setErr("Revisa el email."); return; }
+    if (!f.consent) { setErr("Necesitamos tu consentimiento para responderte."); return; }
+    setStatus("sending");
+    try {
+      const r = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(f),
+      });
+      if (!r.ok) throw new Error("bad");
+      setStatus("ok");
+    } catch (_) {
+      setStatus("error");
+      setErr("No se pudo enviar. Escríbenos a hola@branthia.com.");
+    }
+  }
+
+  const inputBase = {
+    width: "100%", background: "transparent", border: "none",
+    borderBottom: "1px solid var(--line)", padding: "10px 0",
+    fontFamily: "var(--display)", fontSize: 18, color: "var(--fg)",
+    outline: "none", transition: "border-color .2s", borderRadius: 0,
+  };
+  const focusOn = (e) => { e.target.style.borderBottomColor = "var(--fg)"; };
+  const focusOff = (e) => { e.target.style.borderBottomColor = "var(--line)"; };
+
+  // Helpers que devuelven <input>/<textarea> directamente (no subcomponentes),
+  // para no remontar el campo en cada tecla y perder el foco.
+  const field = (k, { type = "text", placeholder = "" } = {}) => (
+    <input type={type} value={f[k]} onChange={set(k)} placeholder={placeholder}
+      autoComplete={k === "email" ? "email" : k === "nombre" ? "name" : k === "empresa" ? "organization" : "off"}
+      onFocus={focusOn} onBlur={focusOff} style={inputBase} />
+  );
+  const label = (t) => <Mono style={{ color: "var(--muted)", display: "block", marginBottom: 6 }}>{t}</Mono>;
+
   return (
-    <section id="contacto" style={{ padding: w < BP.sm ? "100px 20px 60px" : "140px 28px 60px", borderTop: "1px solid var(--line)" }}>
-      <div style={{ display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : "120px 1fr", gap: 32 }}>
+    <section id="contacto" style={{ padding: sm ? "60px 20px 48px" : "140px 28px 72px", borderTop: "1px solid var(--line)" }}>
+      <div style={{ display: "grid", gridTemplateColumns: sm ? "1fr" : "120px 1fr", gap: sm ? 10 : 32 }}>
         <Mono style={{ color: "var(--muted)" }}>§ VI — Contacto</Mono>
         <div>
           <h2 style={{
             fontFamily: "var(--display)", fontWeight: 900,
-            fontSize: "clamp(64px, 12vw, 220px)", lineHeight: 0.86,
+            fontSize: "clamp(56px, 11vw, 200px)", lineHeight: 0.86,
             letterSpacing: "-0.055em", margin: 0,
           }}>
             Hablemos<span style={{ color: "var(--accent)" }}>.</span>
           </h2>
+          <p style={{ marginTop: sm ? 18 : 24, fontSize: 16, lineHeight: 1.5, color: "var(--muted)", maxWidth: 520 }}>
+            Cuéntanos qué quieres construir. Leemos todo y respondemos en <span style={{ color: "var(--fg)" }}>24–48 h</span>.
+          </p>
 
-          <div style={{ display: "grid", gridTemplateColumns: w < BP.sm ? "1fr" : "1fr 1fr", gap: 32, marginTop: 56 }}>
+          <div style={{ display: "grid", gridTemplateColumns: w < BP.md ? "1fr" : "1.15fr 0.85fr", gap: sm ? 44 : 64, marginTop: sm ? 40 : 64 }}>
+            {/* ---- Formulario ---- */}
             <div>
-              <Mono style={{ color: "var(--muted)" }}>Estudio</Mono>
-              <a href="mailto:hola@branthia.com"
-                 onMouseEnter={() => setHover(true)}
-                 onMouseLeave={() => setHover(false)}
-                 style={{
-                   display: "block", marginTop: 8,
-                   fontFamily: "var(--display)", fontWeight: 700,
-                   fontSize: "clamp(28px, 3.4vw, 52px)",
-                   letterSpacing: "-0.03em", color: "var(--fg)",
-                   textDecoration: "none",
-                   borderBottom: `2px solid ${hover ? "var(--accent)" : "var(--line)"}`,
-                   paddingBottom: 6, transition: "border-color .2s",
-                 }}>
-                hola@branthia.com
-              </a>
-              <div style={{ marginTop: 18, fontSize: 14, color: "var(--muted)", maxWidth: 420 }}>
-                Para nuevos proyectos, prensa o conversaciones que aún no tienen nombre.
-              </div>
+              <Mono style={{ color: "var(--muted)", fontSize: 14, display: "block", marginBottom: sm ? 22 : 28 }}>Escríbenos</Mono>
+              {status === "ok" ? (
+                <div style={{ borderTop: "1px solid var(--line)", paddingTop: 32 }}>
+                  <div style={{ fontFamily: "var(--display)", fontWeight: 900, fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.03em", lineHeight: 1 }}>
+                    Gracias<span style={{ color: "var(--accent)" }}>.</span>
+                  </div>
+                  <p style={{ marginTop: 16, fontSize: 16, lineHeight: 1.5, color: "var(--muted)", maxWidth: 420 }}>
+                    Mensaje recibido. Te respondemos a <span style={{ color: "var(--fg)" }}>{f.email}</span> en 24–48 h.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={submit} noValidate>
+                  {/* honeypot anti-spam (oculto) */}
+                  <input type="text" name="website" value={f.website} onChange={set("website")}
+                    tabIndex={-1} autoComplete="off" aria-hidden="true"
+                    style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
+
+                  <div style={{ display: "grid", gridTemplateColumns: sm ? "1fr" : "1fr 1fr", gap: sm ? 24 : 24 }}>
+                    <div>{label("Nombre *")}{field("nombre", { placeholder: "Tu nombre" })}</div>
+                    <div>{label("Email *")}{field("email", { type: "email", placeholder: "tu@empresa.com" })}</div>
+                  </div>
+
+                  <div style={{ marginTop: 24 }}>{label("Empresa")}{field("empresa", { placeholder: "Opcional" })}</div>
+
+                  <div style={{ marginTop: 28 }}>
+                    {label("Tipo de proyecto")}
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 4 }}>
+                      {TIPOS_PROYECTO.map((t) => {
+                        const on = f.tipo === t;
+                        return (
+                          <button type="button" key={t} onClick={() => setF((s) => ({ ...s, tipo: on ? "" : t }))}
+                            style={{
+                              fontFamily: "var(--display)", fontSize: 14, fontWeight: 600,
+                              padding: "8px 14px", borderRadius: 999, cursor: "pointer",
+                              border: `1px solid ${on ? "var(--fg)" : "var(--line)"}`,
+                              background: on ? "var(--fg)" : "transparent",
+                              color: on ? "var(--bg)" : "var(--fg)",
+                              transition: "all .18s",
+                            }}>
+                            {t}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: 28 }}>
+                    {label("Mensaje *")}
+                    <textarea value={f.mensaje} onChange={set("mensaje")} rows={sm ? 4 : 3}
+                      placeholder="Qué quieres resolver, en qué plazo…"
+                      onFocus={focusOn} onBlur={focusOff}
+                      style={{ ...inputBase, fontFamily: "var(--display)", fontSize: 18, resize: "vertical", lineHeight: 1.4 }} />
+                  </div>
+
+                  <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginTop: 24, cursor: "pointer", fontSize: 13, lineHeight: 1.5, color: "var(--muted)" }}>
+                    <input type="checkbox" checked={f.consent} onChange={set("consent")}
+                      style={{ marginTop: 2, width: 16, height: 16, accentColor: "var(--fg)", flexShrink: 0 }} />
+                    <span>Acepto que Branthia trate mis datos para responder a esta consulta. Ver la <a href="Privacidad.html" style={{ color: "var(--fg)" }}>política de privacidad</a>.</span>
+                  </label>
+
+                  {err && <div style={{ marginTop: 18, fontSize: 13, color: "var(--accent)", fontWeight: 600 }}>{err}</div>}
+
+                  <button type="submit" disabled={status === "sending"}
+                    style={{
+                      marginTop: 28, width: sm ? "100%" : "auto",
+                      display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
+                      border: "1px solid var(--fg)", background: "var(--fg)", color: "var(--bg)",
+                      padding: "14px 28px", borderRadius: 999, cursor: status === "sending" ? "default" : "pointer",
+                      fontFamily: "var(--display)", fontSize: 16, fontWeight: 600,
+                      opacity: status === "sending" ? 0.6 : 1, transition: "opacity .2s",
+                    }}>
+                    {status === "sending" ? "Enviando…" : "Enviar mensaje"} <span style={{ color: "var(--accent)" }}>→</span>
+                  </button>
+                </form>
+              )}
             </div>
 
-            <div>
-              <Mono style={{ color: "var(--muted)" }}>Marcas</Mono>
-              <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 12 }}>
-                {[
-                  ["Athria", "athria.com", "Clubes de atletismo"],
-                  ["Cohexia", "cohexia.com", "PRM moderno"],
-                ].map(([name, url, sub]) => (
-                  <a key={name} href={`https://${url}`} style={{
-                    display: "flex", justifyContent: "space-between", alignItems: "center",
-                    padding: "16px 0", borderTop: "1px solid var(--line)",
-                    color: "var(--fg)", textDecoration: "none",
-                  }}>
-                    <div>
-                      <div style={{ fontFamily: "var(--display)", fontWeight: 800, fontSize: 24, letterSpacing: "-0.025em" }}>{name}<span style={{ color: "var(--accent)" }}>.</span></div>
-                      <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>{sub}</div>
-                    </div>
-                    <Mono style={{ color: "var(--muted)" }}>{url} ↗</Mono>
-                  </a>
-                ))}
+            {/* ---- Directo ---- */}
+            <div style={{
+              borderTop: w < BP.md ? "1px solid var(--line)" : "none",
+              borderLeft: w < BP.md ? "none" : "1px solid var(--line)",
+              paddingTop: w < BP.md ? 36 : 2,
+              paddingLeft: w < BP.md ? 0 : 40,
+            }}>
+              <Mono style={{ color: "var(--muted)", fontSize: 14, display: "block" }}>Directo</Mono>
+              <a href="mailto:hola@branthia.com" style={{
+                display: "inline-block", marginTop: 8,
+                fontFamily: "var(--display)", fontWeight: 700,
+                fontSize: "clamp(22px, 2.4vw, 30px)", letterSpacing: "-0.02em",
+                color: "var(--fg)", textDecoration: "none",
+                borderBottom: "2px solid var(--line)", paddingBottom: 4,
+              }}>
+                hola@branthia.com
+              </a>
+              <div style={{ marginTop: 14, fontSize: 14, color: "var(--muted)", maxWidth: 360 }}>
+                Para nuevos proyectos, prensa o conversaciones que aún no tienen nombre.
+              </div>
+
+              <div style={{ marginTop: 32 }}>
+                {label("Marcas")}
+                <div style={{ marginTop: 6, display: "flex", flexDirection: "column" }}>
+                  {[
+                    ["Athria", "athria.com", "Clubes de atletismo"],
+                    ["Cohexia", "cohexia.com", "PRM moderno"],
+                  ].map(([name, url, sub]) => (
+                    <a key={name} href={`https://${url}`} style={{
+                      display: "flex", justifyContent: "space-between", alignItems: "center",
+                      padding: "14px 0", borderTop: "1px solid var(--line)",
+                      color: "var(--fg)", textDecoration: "none",
+                    }}>
+                      <div>
+                        <div style={{ fontFamily: "var(--display)", fontWeight: 800, fontSize: 22, letterSpacing: "-0.025em" }}>{name}<span style={{ color: "var(--accent)" }}>.</span></div>
+                        <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>{sub}</div>
+                      </div>
+                      <Mono style={{ color: "var(--muted)" }}>↗</Mono>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
