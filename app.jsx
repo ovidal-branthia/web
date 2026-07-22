@@ -913,11 +913,11 @@ function BrandCard({ b }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        position: "relative", aspectRatio: "3/4",
+        position: "relative", aspectRatio: w < BP.md ? "auto" : "3/4",
         background: hover && !b.placeholder ? "var(--fg)" : "var(--chip)",
         color: hover && !b.placeholder ? "var(--bg)" : "var(--fg)",
-        padding: 24, borderRadius: 6,
-        display: "flex", flexDirection: "column",
+        padding: w < BP.sm ? 20 : 24, borderRadius: 6,
+        display: "flex", flexDirection: "column", gap: w < BP.sm ? 18 : 0,
         transition: "all .35s cubic-bezier(.2,.7,.2,1)",
         overflow: "hidden",
         border: b.placeholder ? "1px dashed var(--line)" : "1px solid transparent",
