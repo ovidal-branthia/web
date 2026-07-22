@@ -1,5 +1,6 @@
-/* global React, ReactDOM */
-const { useState, useEffect, useRef, useMemo } = React;
+import { useState, useEffect, useRef, useMemo } from "react";
+import { BranthiaLogo } from "./Logo.jsx";
+import { useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakColor, TweakToggle } from "./Tweaks.jsx";
 
 // ---------------------------------------------------------------------------
 // Tweakable defaults
@@ -49,9 +50,10 @@ const Rule = ({ style }) => (
 // Viewport width hook + breakpoints for responsive layouts (inline styles → no
 // CSS media queries, so we branch grid templates on width).
 function useW() {
-  const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1280);
+  const [w, setW] = useState(1280);
   useEffect(() => {
     const on = () => setW(window.innerWidth);
+    on(); // fija el ancho real ya hidratado
     window.addEventListener("resize", on);
     return () => window.removeEventListener("resize", on);
   }, []);
@@ -65,7 +67,7 @@ const BP = { sm: 640, md: 1024 };   // < sm = móvil · < md = tablet · ≥ md 
 const NAV_LINKS = [
   ["Servicios", "#territorios"],
   ["IA", "#ia"],
-  ["Estudio", "Estudio.html"],
+  ["Estudio", "/estudio"],
   ["Soluciones", "#hub"],
   ["Clientes", "#clientes"],
   ["Manifesto", "#manifesto"],
@@ -1340,7 +1342,7 @@ function Contact() {
                   <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginTop: 24, cursor: "pointer", fontSize: 13, lineHeight: 1.5, color: "var(--muted)" }}>
                     <input type="checkbox" checked={f.consent} onChange={set("consent")}
                       style={{ marginTop: 2, width: 16, height: 16, accentColor: "var(--fg)", flexShrink: 0 }} />
-                    <span>Acepto que Branthia trate mis datos para responder a esta consulta. Ver la <a href="Privacidad.html" style={{ color: "var(--fg)" }}>política de privacidad</a>.</span>
+                    <span>Acepto que Branthia trate mis datos para responder a esta consulta. Ver la <a href="/privacidad" style={{ color: "var(--fg)" }}>política de privacidad</a>.</span>
                   </label>
 
                   {err && <div style={{ marginTop: 18, fontSize: 13, color: "var(--accent)", fontWeight: 600 }}>{err}</div>}
@@ -1426,9 +1428,9 @@ function Footer() {
         <div style={{ display: "flex", gap: 24 }}>
           <a href="#" style={{ color: "var(--muted)", textDecoration: "none" }}>LinkedIn</a>
           <a href="#" style={{ color: "var(--muted)", textDecoration: "none" }}>Instagram</a>
-          <a href="Privacidad.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Privacidad</a>
-          <a href="Cookies.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Cookies</a>
-          <a href="Legal.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Aviso legal</a>
+          <a href="/privacidad" style={{ color: "var(--muted)", textDecoration: "none" }}>Privacidad</a>
+          <a href="/cookies" style={{ color: "var(--muted)", textDecoration: "none" }}>Cookies</a>
+          <a href="/legal" style={{ color: "var(--muted)", textDecoration: "none" }}>Aviso legal</a>
         </div>
       </div>
     </footer>
@@ -1439,7 +1441,7 @@ function Footer() {
 // App
 // ---------------------------------------------------------------------------
 function App() {
-  const [t, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const theme = THEMES[t.theme] || THEMES.paper;
   const accent = ACCENTS[t.accent] || ACCENTS.ink;
   const display = FONT_STACKS[t.displayFont] || FONT_STACKS.satoshi;
@@ -1469,9 +1471,9 @@ function App() {
       <Contact />
       <Footer />
 
-      <window.TweaksPanel title="Tweaks">
-        <window.TweakSection label="Tema">
-          <window.TweakRadio
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Tema">
+          <TweakRadio
             label="Fondo"
             value={t.theme}
             options={[
@@ -1481,7 +1483,7 @@ function App() {
             ]}
             onChange={(v) => setTweak("theme", v)}
           />
-          <window.TweakColor
+          <TweakColor
             label="Acento"
             value={ACCENTS[t.accent]?.c}
             options={Object.values(ACCENTS).map(a => a.c)}
@@ -1490,10 +1492,10 @@ function App() {
               setTweak("accent", k);
             }}
           />
-        </window.TweakSection>
+        </TweakSection>
 
-        <window.TweakSection label="Hero">
-          <window.TweakRadio
+        <TweakSection label="Hero">
+          <TweakRadio
             label="Modo"
             value={t.heroMode}
             options={[
@@ -1503,7 +1505,7 @@ function App() {
             ]}
             onChange={(v) => setTweak("heroMode", v)}
           />
-          <window.TweakRadio
+          <TweakRadio
             label="Hilo IA"
             value={t.iaThread}
             options={[
@@ -1515,11 +1517,11 @@ function App() {
             ]}
             onChange={(v) => setTweak("iaThread", v)}
           />
-          <window.TweakToggle label="Marquee" value={t.marquee} onChange={(v) => setTweak("marquee", v)} />
-        </window.TweakSection>
+          <TweakToggle label="Marquee" value={t.marquee} onChange={(v) => setTweak("marquee", v)} />
+        </TweakSection>
 
-        <window.TweakSection label="Tipografía">
-          <window.TweakRadio
+        <TweakSection label="Tipografía">
+          <TweakRadio
             label="Display"
             value={t.displayFont}
             options={[
@@ -1528,11 +1530,11 @@ function App() {
             ]}
             onChange={(v) => setTweak("displayFont", v)}
           />
-        </window.TweakSection>
-      </window.TweaksPanel>
+        </TweakSection>
+      </TweaksPanel>
     </div>
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+
+export default App;

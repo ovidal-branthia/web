@@ -1,6 +1,8 @@
-/* global React, ReactDOM */
+import React from "react";
+import { BranthiaLogo } from "./Logo.jsx";
+
 // Páginas legales (Aviso legal, Privacidad, Cookies). Un solo motor; cada HTML
-// fija window.__LEGAL = 'aviso' | 'privacidad' | 'cookies'. Reutiliza logo.jsx.
+// Recibe la prop `doc` = 'aviso' | 'privacidad' | 'cookies'. Reutiliza Logo.jsx.
 //
 // ⚠ Textos: plantilla sólida pero conviene una revisión legal antes de publicar.
 // ⚠ Datos de inscripción en el Registro Mercantil pendientes (sociedad en constitución).
@@ -29,9 +31,10 @@ const Mono = ({ children, style }) => (
 );
 
 function useW() {
-  const [w, setW] = React.useState(typeof window !== "undefined" ? window.innerWidth : 1280);
+  const [w, setW] = React.useState(1280);
   React.useEffect(() => {
     const on = () => setW(window.innerWidth);
+    on(); // fija el ancho real ya hidratado
     window.addEventListener("resize", on);
     return () => window.removeEventListener("resize", on);
   }, []);
@@ -40,13 +43,13 @@ function useW() {
 const BP = { sm: 640, md: 1024 };
 
 const NAV = [
-  ["Servicios", "Home.html#territorios"],
-  ["IA", "Home.html#ia"],
-  ["Estudio", "Estudio.html"],
-  ["Soluciones", "Home.html#hub"],
-  ["Clientes", "Home.html#clientes"],
-  ["Manifesto", "Home.html#manifesto"],
-  ["Contacto", "Home.html#contacto"],
+  ["Servicios", "/#territorios"],
+  ["IA", "/#ia"],
+  ["Estudio", "/estudio"],
+  ["Soluciones", "/#hub"],
+  ["Clientes", "/#clientes"],
+  ["Manifesto", "/#manifesto"],
+  ["Contacto", "/#contacto"],
 ];
 
 function Nav() {
@@ -61,8 +64,8 @@ function Nav() {
         padding: mobile ? "16px 20px" : "22px 28px", color: "var(--fg)", background: "var(--bg)",
         borderBottom: "1px solid var(--line)",
       }}>
-        <a href="Home.html" aria-label="Branthia — inicio" style={{ color: "inherit", display: "flex", alignItems: "center" }}>
-          <window.BranthiaLogo height={22} />
+        <a href="/" aria-label="Branthia — inicio" style={{ color: "inherit", display: "flex", alignItems: "center" }}>
+          <BranthiaLogo height={22} />
         </a>
         {!mobile && (
           <nav style={{ display: "flex", gap: 28 }}>
@@ -77,7 +80,7 @@ function Nav() {
             <span style={{ width: 24, height: 2, background: "currentColor", display: "block" }} />
           </button>
         ) : (
-          <a href="Home.html#contacto" style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 10 }}>
+          <a href="/#contacto" style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 10 }}>
             Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
           </a>
         )}
@@ -86,7 +89,7 @@ function Nav() {
       {mobile && menuOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 100, background: "var(--bg)", color: "var(--fg)", display: "flex", flexDirection: "column", padding: "16px 20px 32px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <window.BranthiaLogo height={22} />
+            <BranthiaLogo height={22} />
             <button onClick={() => setMenuOpen(false)} aria-label="Cerrar menú" style={{ appearance: "none", border: "none", background: "transparent", color: "inherit", fontSize: 26, lineHeight: 1, cursor: "pointer", padding: 6 }}>✕</button>
           </div>
           <nav style={{ display: "flex", flexDirection: "column", gap: 2, margin: "auto 0" }}>
@@ -94,7 +97,7 @@ function Nav() {
               <a key={l} href={h} onClick={() => setMenuOpen(false)} style={{ color: "inherit", textDecoration: "none", fontFamily: "var(--display)", fontWeight: 800, fontSize: "clamp(32px, 8.5vw, 52px)", letterSpacing: "-0.03em", lineHeight: 1.12, padding: "6px 0" }}>{l}<span style={{ color: "var(--accent)" }}>.</span></a>
             ))}
           </nav>
-          <a href="Home.html#contacto" onClick={() => setMenuOpen(false)} style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "16px 22px", borderRadius: 999, fontSize: 16, fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+          <a href="/#contacto" onClick={() => setMenuOpen(false)} style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "16px 22px", borderRadius: 999, fontSize: 16, fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
             Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
           </a>
         </div>
@@ -106,14 +109,14 @@ function Nav() {
 function Footer() {
   return (
     <footer style={{ padding: "60px 28px 28px", borderTop: "1px solid var(--line)" }}>
-      <window.BranthiaLogo title="Branthia" height="auto" style={{ width: "40%", height: "auto", color: "var(--fg)" }} />
+      <BranthiaLogo title="Branthia" height="auto" style={{ width: "40%", height: "auto", color: "var(--fg)" }} />
       <div style={{ marginTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 16, fontSize: 13, color: "var(--muted)" }}>
         <div>© MMXXVI {EMPRESA.nombre} — Vilanova i la Geltrú · ES</div>
         <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-          <a href="Home.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Inicio</a>
-          <a href="Privacidad.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Privacidad</a>
-          <a href="Cookies.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Cookies</a>
-          <a href="Legal.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Aviso legal</a>
+          <a href="/" style={{ color: "var(--muted)", textDecoration: "none" }}>Inicio</a>
+          <a href="/privacidad" style={{ color: "var(--muted)", textDecoration: "none" }}>Privacidad</a>
+          <a href="/cookies" style={{ color: "var(--muted)", textDecoration: "none" }}>Cookies</a>
+          <a href="/legal" style={{ color: "var(--muted)", textDecoration: "none" }}>Aviso legal</a>
         </div>
       </div>
     </footer>
@@ -170,7 +173,7 @@ function AvisoLegal() {
         <P>{EMPRESA.nombre} no se hace responsable de los daños o perjuicios que pudieran derivarse de la falta de disponibilidad o continuidad del Sitio Web, ni de errores en sus contenidos. El Sitio Web puede incluir enlaces a sitios de terceros; {EMPRESA.nombre} no asume responsabilidad alguna sobre sus contenidos ni sobre las prácticas de privacidad de dichos sitios.</P>
       </Section>
       <Section n="6" title="Protección de datos">
-        <P>El tratamiento de los datos de carácter personal que se realicen a través del Sitio Web se rige por lo dispuesto en la <a href="Privacidad.html" style={{ color: "var(--fg)" }}>Política de Privacidad</a> y en la <a href="Cookies.html" style={{ color: "var(--fg)" }}>Política de Cookies</a>.</P>
+        <P>El tratamiento de los datos de carácter personal que se realicen a través del Sitio Web se rige por lo dispuesto en la <a href="/privacidad" style={{ color: "var(--fg)" }}>Política de Privacidad</a> y en la <a href="/cookies" style={{ color: "var(--fg)" }}>Política de Cookies</a>.</P>
       </Section>
       <Section n="7" title="Legislación aplicable y jurisdicción">
         <P>El presente Aviso Legal se rige por la legislación española. Para la resolución de cualquier controversia que pudiera derivarse del acceso o uso del Sitio Web, las partes se someten a los Juzgados y Tribunales del domicilio del titular, salvo que resulte de aplicación una normativa imperativa distinta, en particular en materia de consumidores y usuarios.</P>
@@ -194,7 +197,7 @@ function Privacidad() {
         ]} />
       </Section>
       <Section n="2" title="Datos que tratamos">
-        <P>Tratamos los datos que nos facilitas a través del formulario de contacto o al comunicarte con nosotros por correo electrónico: nombre, dirección de correo electrónico, empresa y el contenido de tu mensaje. Asimismo, tratamos datos de navegación mediante cookies, según se detalla en la <a href="Cookies.html" style={{ color: "var(--fg)" }}>Política de Cookies</a>.</P>
+        <P>Tratamos los datos que nos facilitas a través del formulario de contacto o al comunicarte con nosotros por correo electrónico: nombre, dirección de correo electrónico, empresa y el contenido de tu mensaje. Asimismo, tratamos datos de navegación mediante cookies, según se detalla en la <a href="/cookies" style={{ color: "var(--fg)" }}>Política de Cookies</a>.</P>
       </Section>
       <Section n="3" title="Finalidad del tratamiento">
         <UL items={[
@@ -258,9 +261,9 @@ const DOCS = {
   cookies:    { eyebrow: "Legal", title: "Política de cookies.",    Comp: Cookies },
 };
 
-function LegalPage() {
+function LegalPage({ doc: docKey = "aviso" }) {
   const w = useW();
-  const doc = DOCS[window.__LEGAL] || DOCS.aviso;
+  const doc = DOCS[docKey] || DOCS.aviso;
   const { eyebrow, title, Comp } = doc;
   return (
     <div style={{
@@ -286,5 +289,5 @@ function LegalPage() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<LegalPage />);
+
+export default LegalPage;
