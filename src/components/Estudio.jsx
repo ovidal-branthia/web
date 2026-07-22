@@ -1,6 +1,8 @@
-/* global React, ReactDOM */
+import React from "react";
+import { BranthiaLogo } from "./Logo.jsx";
+
 // Página "El estudio" — la experiencia detrás de Branthia, reencuadrada en voz
-// de estudio (no un spotlight personal). Reutiliza logo.jsx (window.BranthiaLogo).
+// de estudio (no un spotlight personal). Reutiliza logo.jsx (BranthiaLogo).
 
 const T = {
   bg: "#F1ECE2", fg: "#0A0A0A",
@@ -16,9 +18,10 @@ const Mono = ({ children, style }) => (
 );
 
 function useW() {
-  const [w, setW] = React.useState(typeof window !== "undefined" ? window.innerWidth : 1280);
+  const [w, setW] = React.useState(1280);
   React.useEffect(() => {
     const on = () => setW(window.innerWidth);
+    on(); // fija el ancho real ya hidratado
     window.addEventListener("resize", on);
     return () => window.removeEventListener("resize", on);
   }, []);
@@ -27,13 +30,13 @@ function useW() {
 const BP = { sm: 640, md: 1024 };
 
 const NAV = [
-  ["Servicios", "Home.html#territorios"],
-  ["IA", "Home.html#ia"],
-  ["Estudio", "Estudio.html"],
-  ["Soluciones", "Home.html#hub"],
-  ["Clientes", "Home.html#clientes"],
-  ["Manifesto", "Home.html#manifesto"],
-  ["Contacto", "Home.html#contacto"],
+  ["Servicios", "/#territorios"],
+  ["IA", "/#ia"],
+  ["Estudio", "/estudio"],
+  ["Soluciones", "/#hub"],
+  ["Clientes", "/#clientes"],
+  ["Manifesto", "/#manifesto"],
+  ["Contacto", "/#contacto"],
 ];
 
 const TRAYECTORIA = [
@@ -61,8 +64,8 @@ function Nav() {
         padding: mobile ? "18px 20px" : "22px 28px", color: "var(--fg)",
         background: "var(--bg)",
       }}>
-        <a href="Home.html" aria-label="Branthia — inicio" style={{ color: "inherit", display: "flex", alignItems: "center" }}>
-          <window.BranthiaLogo height={24} />
+        <a href="/" aria-label="Branthia — inicio" style={{ color: "inherit", display: "flex", alignItems: "center" }}>
+          <BranthiaLogo height={24} />
         </a>
         {!mobile && (
           <nav style={{ display: "flex", gap: 28 }}>
@@ -77,7 +80,7 @@ function Nav() {
             <span style={{ width: 24, height: 2, background: "currentColor", display: "block" }} />
           </button>
         ) : (
-          <a href="Home.html#contacto" style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 10 }}>
+          <a href="/#contacto" style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "10px 18px", borderRadius: 999, fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 10 }}>
             Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
           </a>
         )}
@@ -86,7 +89,7 @@ function Nav() {
       {mobile && menuOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 100, background: "var(--bg)", color: "var(--fg)", display: "flex", flexDirection: "column", padding: "18px 20px 32px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <window.BranthiaLogo height={24} />
+            <BranthiaLogo height={24} />
             <button onClick={() => setMenuOpen(false)} aria-label="Cerrar menú" style={{ appearance: "none", border: "none", background: "transparent", color: "inherit", fontSize: 26, lineHeight: 1, cursor: "pointer", padding: 6 }}>✕</button>
           </div>
           <nav style={{ display: "flex", flexDirection: "column", gap: 2, margin: "auto 0" }}>
@@ -94,7 +97,7 @@ function Nav() {
               <a key={l} href={h} onClick={() => setMenuOpen(false)} style={{ color: "inherit", textDecoration: "none", fontFamily: "var(--display)", fontWeight: 800, fontSize: "clamp(32px, 8.5vw, 52px)", letterSpacing: "-0.03em", lineHeight: 1.12, padding: "6px 0" }}>{l}<span style={{ color: "var(--accent)" }}>.</span></a>
             ))}
           </nav>
-          <a href="Home.html#contacto" onClick={() => setMenuOpen(false)} style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "16px 22px", borderRadius: 999, fontSize: 16, fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+          <a href="/#contacto" onClick={() => setMenuOpen(false)} style={{ color: "var(--bg)", background: "var(--fg)", textDecoration: "none", padding: "16px 22px", borderRadius: 999, fontSize: 16, fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
             Empezar<span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--accent)" }} />
           </a>
         </div>
@@ -106,15 +109,15 @@ function Nav() {
 function Footer() {
   return (
     <footer style={{ padding: "60px 28px 28px", borderTop: "1px solid var(--line)" }}>
-      <window.BranthiaLogo title="Branthia" height="auto" style={{ width: "40%", height: "auto", color: "var(--fg)" }} />
+      <BranthiaLogo title="Branthia" height="auto" style={{ width: "40%", height: "auto", color: "var(--fg)" }} />
       <div style={{ marginTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 16, fontSize: 13, color: "var(--muted)" }}>
         <div>© MMXXVI Branthia Origin, S.L. — Vilanova i la Geltrú · ES</div>
         <div style={{ display: "flex", gap: 24 }}>
-          <a href="Home.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Inicio</a>
+          <a href="/" style={{ color: "var(--muted)", textDecoration: "none" }}>Inicio</a>
           <a href="#" style={{ color: "var(--muted)", textDecoration: "none" }}>LinkedIn</a>
-          <a href="Privacidad.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Privacidad</a>
-          <a href="Cookies.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Cookies</a>
-          <a href="Legal.html" style={{ color: "var(--muted)", textDecoration: "none" }}>Aviso legal</a>
+          <a href="/privacidad" style={{ color: "var(--muted)", textDecoration: "none" }}>Privacidad</a>
+          <a href="/cookies" style={{ color: "var(--muted)", textDecoration: "none" }}>Cookies</a>
+          <a href="/legal" style={{ color: "var(--muted)", textDecoration: "none" }}>Aviso legal</a>
         </div>
       </div>
     </footer>
@@ -221,7 +224,7 @@ function Estudio() {
         }}>
           ¿Hablamos<span style={{ color: "var(--accent)" }}>?</span>
         </h2>
-        <a href="Home.html#contacto" style={{
+        <a href="/#contacto" style={{
           display: "inline-flex", alignItems: "center", gap: 10, marginTop: 32,
           color: "var(--bg)", background: "var(--fg)", textDecoration: "none",
           padding: "14px 22px", borderRadius: 999, fontSize: 15, fontWeight: 600,
@@ -235,5 +238,5 @@ function Estudio() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Estudio />);
+
+export default Estudio;

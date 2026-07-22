@@ -24,4 +24,4 @@ function BranthiaLogo({ height = 26, style = {}, title = "Branthia" }) {
   );
 }
 
-Object.assign(window, { BranthiaLogo });
+export { BranthiaLogo };

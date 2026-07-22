@@ -1,20 +1,33 @@
+---
+const {
+  title = 'Branthia — Consultora de IA & estudio de producto',
+  description = 'Consultora de IA aplicada y estudio de producto. Del comité de dirección a producción: automatización, sistemas agénticos, producto digital y marca.',
+  noindex = true,
+} = Astro.props;
+---
 <!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Branthia — Consultora de IA & estudio de producto</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg" />
-<!-- TEMPORAL: permite el rastreo (agentes de IA) pero impide la indexación en buscadores.
-     Quitar esta línea en el lanzamiento. -->
-<meta name="robots" content="noindex, follow" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+{/* TEMPORAL: permite el rastreo (agentes de IA) pero impide la indexación.
+    Quitar `noindex` en el lanzamiento. */}
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content="es_ES" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,800,700,500,400,300&f[]=general-sans@700,600,500,400&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-<style>
+<style is:global>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
@@ -36,20 +49,11 @@
     [style*="spinSeal"] { animation: none !important; }
   }
   html { scroll-behavior: smooth; }
-  /* hide scrollbar styling subtlety */
   body::-webkit-scrollbar { width: 10px; }
   body::-webkit-scrollbar-thumb { background: rgba(10,10,10,0.25); border-radius: 99px; }
 </style>
 </head>
 <body>
-<div id="root"></div>
-
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="logo.jsx"></script>
-<script type="text/babel" src="app.jsx"></script>
+<slot />
 </body>
 </html>
