@@ -1,2 +1,4 @@
+# TEMPORAL — abierto para permitir el rastreo/análisis por agentes de IA.
+# Restaurar "Disallow: /" antes del lanzamiento si aún no se quiere indexación.
 User-agent: *
-Disallow: /
+Allow: /
