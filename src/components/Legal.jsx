@@ -4,9 +4,10 @@ import { BranthiaLogo } from "./Logo.jsx";
 // Páginas legales (Aviso legal, Privacidad, Cookies). Un solo motor;
 // recibe la prop `doc` = 'aviso' | 'privacidad' | 'cookies'. Reutiliza Logo.jsx.
 //
-// Aviso legal: texto definitivo v1.0 (22/07/2026), con datos registrales completos.
-// ⚠ Privacidad y Cookies: siguen siendo plantilla; pendientes de redacción/revisión
-//   legal al mismo nivel que el Aviso legal.
+// Aviso legal v1.0 (22/07/2026) y Política de privacidad v1.0 (23/07/2026):
+// textos definitivos, con datos registrales completos.
+// ⚠ Cookies: sigue siendo plantilla; pendiente de redacción/revisión legal al
+//   mismo nivel que los otros dos.
 
 const T = {
   bg: "#F1ECE2", fg: "#0A0A0A",
@@ -143,6 +144,26 @@ const UL = ({ items }) => (
     ))}
   </ul>
 );
+// Subapartado (3.1, 3.2…) y encabezados sin numerar (proveedores).
+function Sub({ n, title, children }) {
+  return (
+    <div style={{ padding: "0 0 22px" }}>
+      <h3 style={{
+        fontFamily: "var(--display)", fontWeight: 700,
+        fontSize: "clamp(17px, 1.5vw, 20px)", letterSpacing: "-0.015em", margin: "0 0 10px",
+      }}>
+        {n && <span style={{ color: "var(--muted)" }}>{n}. </span>}{title}
+      </h3>
+      {children}
+    </div>
+  );
+}
+
+// Párrafo con etiqueta en negrita ("Base jurídica: …").
+const PL = ({ label, children }) => (
+  <P><strong>{label}:</strong> {children}</P>
+);
+
 function Section({ n, title, children }) {
   return (
     <section style={{ padding: "0 0 34px" }}>
@@ -350,41 +371,378 @@ function Privacidad() {
   return (
     <>
       <Section n="1" title="Responsable del tratamiento">
+        <P>El responsable del tratamiento de los datos personales recogidos o tratados a través de {EMPRESA.web}, en adelante, el “Sitio Web”, es:</P>
         <UL items={[
           <span><strong>Responsable:</strong> {EMPRESA.nombre}</span>,
-          <span><strong>NIF/CIF:</strong> {EMPRESA.cif}</span>,
-          <span><strong>Domicilio:</strong> {EMPRESA.domicilio}</span>,
-          <span><strong>Correo electrónico:</strong> {EMPRESA.email}</span>,
+          <span><strong>NIF:</strong> {EMPRESA.cif}.</span>,
+          <span><strong>Domicilio social:</strong> {EMPRESA.domicilio}.</span>,
+          <span><strong>Correo electrónico de privacidad:</strong> <Mail />.</span>,
+          <span><strong>Registro Mercantil:</strong> {EMPRESA.registroMercantil}.</span>,
+          <span><strong>Hoja social:</strong> {EMPRESA.hoja}.</span>,
+          <span><strong>EUID:</strong> {EMPRESA.euid}.</span>,
         ]} />
-      </Section>
-      <Section n="2" title="Datos que tratamos">
-        <P>Tratamos los datos que nos facilitas a través del formulario de contacto o al comunicarte con nosotros por correo electrónico: nombre, dirección de correo electrónico, empresa y el contenido de tu mensaje. Asimismo, tratamos datos de navegación mediante cookies, según se detalla en la <a href="/cookies" style={{ color: "var(--fg)" }}>Política de Cookies</a>.</P>
-      </Section>
-      <Section n="3" title="Finalidad del tratamiento">
+        <P>En adelante, “Branthia”.</P>
+        <P>Esta Política de Privacidad explica cómo trata Branthia los datos personales de las personas que:</P>
         <UL items={[
-          "Atender tus solicitudes, consultas o peticiones de información.",
-          "Gestionar la relación comercial y, en su caso, la prestación de servicios.",
-          "Enviarte comunicaciones sobre nuestros servicios, únicamente si nos has dado tu consentimiento.",
+          "Navegan por el Sitio Web.",
+          "Envían una consulta mediante el formulario o por correo electrónico.",
+          "Solicitan información o una propuesta.",
+          "Actúan como contactos de clientes, clientes potenciales, proveedores o colaboradores.",
+          "Se relacionan profesionalmente con Branthia.",
         ]} />
       </Section>
-      <Section n="4" title="Base jurídica">
-        <P>La base legal para el tratamiento es tu consentimiento (art. 6.1.a RGPD), la ejecución de un contrato o la aplicación de medidas precontractuales a petición tuya (art. 6.1.b RGPD) y el interés legítimo del responsable en responder a tus comunicaciones (art. 6.1.f RGPD).</P>
+
+      <Section n="2" title="Principios aplicados al tratamiento">
+        <P>Branthia tratará los datos personales de forma lícita, leal y transparente.</P>
+        <P>Los datos se limitarán a aquellos que resulten adecuados, pertinentes y necesarios para cada finalidad. Branthia procurará mantenerlos actualizados y los conservará únicamente durante los periodos indicados en esta política o durante los plazos que resulten legalmente aplicables.</P>
+        <P>Branthia no utilizará los datos recogidos mediante el formulario para finalidades incompatibles con las descritas en esta política.</P>
       </Section>
-      <Section n="5" title="Plazo de conservación">
-        <P>Conservaremos tus datos mientras se mantenga la relación y, una vez finalizada, durante los plazos legalmente exigidos para atender posibles responsabilidades. Puedes solicitar su supresión en cualquier momento.</P>
+
+      <Section n="3" title="Tratamientos realizados">
+        <Sub n="3.1" title="Navegación, funcionamiento y seguridad del Sitio Web">
+          <P>Cuando una persona accede al Sitio Web, pueden tratarse determinados datos técnicos necesarios para entregar el contenido, mantener el funcionamiento, prevenir abusos y proteger la seguridad.</P>
+          <P><strong>Datos tratados:</strong></P>
+          <UL items={[
+            "Dirección IP.",
+            "Fecha y hora de acceso.",
+            "Tipo de navegador y dispositivo.",
+            "Sistema operativo.",
+            "Página o recurso solicitado.",
+            "Identificadores técnicos.",
+            "Información sobre errores, rendimiento y seguridad.",
+            "Datos incluidos en registros técnicos, cuando se generen.",
+          ]} />
+          <P><strong>Finalidades:</strong></P>
+          <UL items={[
+            "Mostrar y entregar correctamente el Sitio Web.",
+            "Mantener su disponibilidad y funcionamiento.",
+            "Detectar errores técnicos.",
+            "Prevenir ataques, fraude, abuso o accesos no autorizados.",
+            "Investigar incidentes de seguridad.",
+            "Proteger los sistemas, usuarios y activos de Branthia.",
+          ]} />
+          <PL label="Base jurídica">interés legítimo de Branthia en operar, mantener y proteger su Sitio Web y sus sistemas.</PL>
+          <PL label="Conservación">los datos técnicos se conservarán durante el periodo estrictamente necesario para prestar el servicio, diagnosticar incidencias y mantener la seguridad. Branthia evitará registrar deliberadamente en los logs el contenido completo de los formularios.</PL>
+          <P>Cuando exista un incidente o una investigación de seguridad, los datos estrictamente necesarios podrán conservarse durante un periodo adicional mientras resulte necesario para documentarlo, investigarlo o atender posibles responsabilidades.</P>
+        </Sub>
+
+        <Sub n="3.2" title="Formulario de contacto y consultas">
+          <P>Cuando una persona utiliza el formulario de contacto, Branthia puede tratar:</P>
+          <UL items={[
+            "Nombre.",
+            "Dirección de correo electrónico.",
+            "Empresa u organización.",
+            "Tipo de proyecto o servicio solicitado.",
+            "Contenido del mensaje.",
+            "Información profesional facilitada por la persona.",
+            "Datos técnicos asociados al envío.",
+          ]} />
+          <P><strong>Finalidades:</strong></P>
+          <UL items={[
+            "Recibir y gestionar la consulta.",
+            "Responder a la persona interesada.",
+            "Solicitar información adicional.",
+            "Valorar la posible prestación de servicios.",
+            "Preparar una propuesta, presupuesto o reunión cuando se solicite.",
+            "Mantener las comunicaciones relacionadas con la solicitud.",
+          ]} />
+          <P><strong>Bases jurídicas:</strong></P>
+          <UL items={[
+            "Aplicación de medidas precontractuales a petición de la persona interesada, cuando la consulta tenga como finalidad solicitar una propuesta, presupuesto o posible contratación.",
+            "Interés legítimo de Branthia en atender y responder consultas relacionadas con su actividad, cuando no exista todavía una solicitud precontractual concreta.",
+          ]} />
+          <P>El interés legítimo se limita a gestionar la comunicación solicitada por la propia persona y no implica su incorporación automática a campañas comerciales.</P>
+          <P><strong>Conservación:</strong></P>
+          <UL items={[
+            "Las consultas que no den lugar a una propuesta, negociación o relación posterior se conservarán durante un máximo de 12 meses desde la última interacción.",
+            "Cuando exista una propuesta o negociación, los datos se conservarán durante un máximo de 24 meses desde la última interacción, salvo que se formalice una relación contractual o exista una razón justificada para conservarlos durante más tiempo.",
+            "Cuando la consulta dé lugar a una relación contractual, se aplicarán los plazos indicados en el apartado relativo a clientes y relaciones profesionales.",
+          ]} />
+        </Sub>
+
+        <Sub n="3.3" title="Solicitudes recibidas por correo electrónico">
+          <P>Cuando una persona escribe directamente a una dirección de correo de Branthia, se tratarán:</P>
+          <UL items={[
+            "Su dirección de correo.",
+            "Nombre e información incluida en la firma.",
+            "Contenido del mensaje.",
+            "Documentos o archivos adjuntos.",
+            "Información técnica y metadatos asociados al correo.",
+            "Correspondencia posterior.",
+          ]} />
+          <P>Las finalidades, bases jurídicas y periodos de conservación serán los mismos que correspondan según la naturaleza de la comunicación: consulta general, solicitud precontractual, relación profesional o ejercicio de derechos.</P>
+          <P>No deben remitirse por correo datos especialmente sensibles o documentación confidencial que no sea necesaria para la finalidad de la comunicación.</P>
+        </Sub>
+
+        <Sub n="3.4" title="Clientes, clientes potenciales y contactos profesionales">
+          <P>Cuando Branthia inicia o mantiene una relación comercial o profesional, puede tratar:</P>
+          <UL items={[
+            "Nombre y apellidos.",
+            "Cargo o función.",
+            "Empresa u organización.",
+            "Correo y teléfono profesionales.",
+            "Datos incluidos en propuestas y contratos.",
+            "Comunicaciones y reuniones.",
+            "Información sobre el proyecto.",
+            "Datos de facturación y pagos.",
+            "Historial de la relación.",
+            "Incidencias, solicitudes y decisiones relacionadas con el servicio.",
+          ]} />
+          <P><strong>Finalidades:</strong></P>
+          <UL items={[
+            "Gestionar la relación precontractual y contractual.",
+            "Preparar propuestas.",
+            "Prestar y administrar los servicios.",
+            "Gestionar reuniones, entregables y comunicaciones.",
+            "Facturar y cobrar los servicios.",
+            "Cumplir obligaciones contables, fiscales y mercantiles.",
+            "Gestionar incidencias y posibles reclamaciones.",
+            "Mantener la relación con las personas de contacto de la organización cliente.",
+          ]} />
+          <P><strong>Bases jurídicas:</strong></P>
+          <UL items={[
+            "Aplicación de medidas precontractuales.",
+            "Ejecución de un contrato.",
+            "Cumplimiento de obligaciones legales.",
+            "Interés legítimo en mantener la comunicación con los representantes y contactos profesionales de clientes, proveedores y organizaciones con las que Branthia mantiene una relación.",
+          ]} />
+          <P><strong>Conservación:</strong></P>
+          <UL items={[
+            "Durante la vigencia de la relación profesional.",
+            "Las comunicaciones ordinarias que no resulte necesario conservar se revisarán y podrán suprimirse transcurridos 24 meses desde la finalización de la relación.",
+            "Los contratos, facturas, justificantes y documentación mercantil se conservarán durante los plazos exigidos por la normativa aplicable.",
+            "Cuando sea necesario formular, ejercer o defender reclamaciones, la información pertinente podrá conservarse mientras puedan derivarse responsabilidades.",
+          ]} />
+          <P>Finalizada la relación, los datos podrán mantenerse bloqueados o con acceso restringido cuando resulte necesario cumplir obligaciones legales o atender posibles responsabilidades.</P>
+        </Sub>
+
+        <Sub n="3.5" title="Comunicaciones comerciales">
+          <P>El envío de una consulta o solicitud mediante el formulario no suscribe automáticamente a la persona a una newsletter ni autoriza el envío de campañas promocionales.</P>
+          <P>Cuando Branthia habilite una opción específica para recibir comunicaciones comerciales, estas solo se enviarán cuando exista una base jurídica válida y, en el caso del formulario web, mediante una casilla opcional, específica y desmarcada por defecto.</P>
+          <P><strong>Datos tratados:</strong></P>
+          <UL items={[
+            "Nombre.",
+            "Correo electrónico.",
+            "Empresa.",
+            "Preferencias o consentimiento registrado.",
+            "Información sobre la baja u oposición.",
+          ]} />
+          <PL label="Finalidad">enviar novedades, contenidos, invitaciones o comunicaciones comerciales sobre los servicios y actividades de Branthia.</PL>
+          <PL label="Base jurídica">consentimiento de la persona interesada, salvo que resulte aplicable otro supuesto legal específicamente analizado y documentado.</PL>
+          <P><strong>Conservación:</strong></P>
+          <UL items={[
+            "Hasta que se retire el consentimiento o se solicite la baja.",
+            "Branthia podrá revisar y eliminar contactos promocionales después de 24 meses sin interacción.",
+            "Se conservará la información mínima necesaria en una lista de oposición para impedir nuevos envíos a quien haya solicitado la baja.",
+          ]} />
+          <P>La retirada del consentimiento no afectará a la licitud de los tratamientos realizados anteriormente.</P>
+        </Sub>
+
+        <Sub n="3.6" title="Ejercicio de derechos y consultas sobre privacidad">
+          <P>Cuando una persona ejerza sus derechos o formule una consulta sobre privacidad, Branthia tratará:</P>
+          <UL items={[
+            "Datos identificativos.",
+            "Datos de contacto.",
+            "Contenido de la solicitud.",
+            "Información necesaria para verificar la identidad.",
+            "Comunicaciones y documentación relacionada con la respuesta.",
+          ]} />
+          <PL label="Finalidad">tramitar la solicitud, verificar la identidad cuando sea necesario, responder y conservar evidencia de su gestión.</PL>
+          <PL label="Base jurídica">cumplimiento de las obligaciones legales de Branthia.</PL>
+          <PL label="Conservación">durante la tramitación de la solicitud y, posteriormente, durante el periodo necesario para acreditar su correcta gestión y atender posibles responsabilidades.</PL>
+        </Sub>
       </Section>
-      <Section n="6" title="Destinatarios">
-        <P>No se cederán datos a terceros salvo obligación legal. Podrán acceder a tus datos los proveedores que prestan servicios a {EMPRESA.nombre} como encargados del tratamiento (por ejemplo, alojamiento, correo electrónico o herramientas de gestión), con los que se han suscrito los correspondientes contratos y garantías.</P>
+
+      <Section n="4" title="Datos obligatorios y consecuencias de no facilitarlos">
+        <P>Los campos marcados como obligatorios en el formulario son necesarios para recibir y responder la consulta.</P>
+        <P>La persona interesada no está obligada a proporcionar datos adicionales que no sean necesarios. Sin embargo, si no facilita un medio de contacto válido o la información mínima sobre su solicitud, Branthia puede no ser capaz de responder o preparar una propuesta.</P>
+        <P>La persona que facilite datos garantiza que son correctos y que está autorizada para comunicarlos.</P>
       </Section>
-      <Section n="7" title="Transferencias internacionales">
-        <P>Si alguno de nuestros proveedores estuviera ubicado fuera del Espacio Económico Europeo, cualquier transferencia se realizará con las garantías adecuadas previstas en el RGPD (por ejemplo, cláusulas contractuales tipo aprobadas por la Comisión Europea).</P>
+
+      <Section n="5" title="Datos de terceras personas">
+        <P>No deben incluirse datos personales de terceros en el formulario, en mensajes o en archivos adjuntos, salvo que sea necesario y exista una base legítima para comunicarlos.</P>
+        <P>Cuando una persona facilite datos de otra, deberá asegurarse de que puede hacerlo y de que la persona afectada recibe la información necesaria sobre el tratamiento.</P>
+        <P>Branthia podrá solicitar que se elimine o sustituya cualquier información de terceros que no resulte necesaria.</P>
       </Section>
-      <Section n="8" title="Tus derechos">
-        <P>Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos dirigiéndote a {EMPRESA.email}, indicando el derecho que deseas ejercer. Si consideras que el tratamiento no se ajusta a la normativa, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (www.aepd.es).</P>
+
+      <Section n="6" title="Categorías especiales de datos">
+        <P>El formulario no está diseñado para recoger:</P>
+        <UL items={[
+          "Datos de salud.",
+          "Información genética o biométrica.",
+          "Información sobre origen racial o étnico.",
+          "Opiniones políticas.",
+          "Convicciones religiosas o filosóficas.",
+          "Afiliación sindical.",
+          "Información sobre vida u orientación sexual.",
+          "Contraseñas.",
+          "Datos bancarios completos.",
+          "Documentación especialmente confidencial.",
+        ]} />
+        <P>Las personas usuarias deben abstenerse de incluir esta información en el formulario o en correos iniciales.</P>
+        <P>Cuando un proyecto requiera posteriormente tratar datos sensibles, confidenciales o pertenecientes a clientes, Branthia realizará un análisis específico de los roles, finalidades, medidas de seguridad y condiciones contractuales antes de recibirlos.</P>
       </Section>
-      <Section n="9" title="Seguridad">
-        <P>{EMPRESA.nombre} aplica las medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo y proteger tus datos frente a su pérdida, alteración o acceso no autorizado.</P>
+
+      <Section n="7" title="Procedencia de los datos">
+        <P>Normalmente, los datos son facilitados directamente por la persona interesada mediante:</P>
+        <UL items={["El formulario.", "El correo electrónico.", "Reuniones.", "Propuestas.", "Contratos.", "Interacciones profesionales."]} />
+        <P>En algunos casos, los datos de contacto profesional pueden proceder de:</P>
+        <UL items={[
+          "La empresa u organización a la que pertenece la persona.",
+          "Otro contacto autorizado de dicha organización.",
+          "Una presentación o recomendación profesional.",
+          "Fuentes profesionales legítimamente accesibles.",
+          "Relaciones o comunicaciones previas.",
+        ]} />
+        <P>Cuando los datos no se obtengan directamente de la persona y resulte legalmente necesario, Branthia facilitará la información correspondiente dentro del plazo aplicable.</P>
       </Section>
+
+      <Section n="8" title="Proveedores y destinatarios">
+        <P>Branthia utiliza proveedores tecnológicos que pueden acceder o tratar datos personales para prestar sus servicios.</P>
+        <P>En el flujo actual del formulario intervienen:</P>
+
+        <Sub title="Vercel">
+          <P>Branthia utiliza Vercel para alojar el Sitio Web y ejecutar la infraestructura técnica que recibe la solicitud del formulario.</P>
+          <P>Vercel puede tratar datos técnicos, direcciones IP y la información transmitida a la función encargada de procesar el formulario.</P>
+          <P>Branthia utiliza un plan profesional y aplicará medidas para que el contenido completo de las consultas no se registre deliberadamente en logs técnicos.</P>
+        </Sub>
+
+        <Sub title="Resend">
+          <P>Branthia utiliza Resend, servicio prestado por Plus Five Five, Inc., para enviar el contenido del formulario al buzón corporativo de Branthia.</P>
+          <P>Resend puede tratar:</P>
+          <UL items={["Direcciones de correo.", "Datos del remitente y destinatario.", "Asunto.", "Contenido del mensaje.", "Metadatos de entrega."]} />
+          <P>Branthia utilizará Resend exclusivamente para gestionar el envío del formulario y mantendrá desactivado el seguimiento de aperturas y enlaces mientras no sea necesario para esta finalidad.</P>
+          <P>Según la configuración ordinaria del proveedor, los datos asociados a los correos pueden conservarse en Resend durante 30 días.</P>
+        </Sub>
+
+        <Sub title="Microsoft 365">
+          <P>Branthia utiliza Microsoft 365 para recibir, almacenar y gestionar el correo corporativo y las comunicaciones posteriores.</P>
+          <P>Los mensajes enviados mediante el formulario llegan a un buzón corporativo de Microsoft 365, donde se aplican los periodos de conservación establecidos en esta política.</P>
+        </Sub>
+
+        <Sub title="Otros destinatarios">
+          <P>Los datos también podrán comunicarse:</P>
+          <UL items={[
+            "A administraciones públicas, autoridades, juzgados o tribunales cuando exista una obligación legal o un requerimiento válido.",
+            "A asesores o profesionales cuando sea necesario para atender obligaciones legales o defender reclamaciones, sujetos a las correspondientes obligaciones de confidencialidad.",
+            "A otros proveedores cuando resulte necesario para prestar un servicio solicitado, después de analizar su función y las garantías aplicables.",
+          ]} />
+          <P>Branthia no vende los datos personales de las personas usuarias.</P>
+          <P>Los proveedores que actúen por cuenta de Branthia deberán tratar los datos conforme a sus instrucciones, al contrato aplicable y a las obligaciones de confidencialidad y seguridad correspondientes.</P>
+        </Sub>
+      </Section>
+
+      <Section n="9" title="Transferencias internacionales">
+        <P>Algunos proveedores tecnológicos utilizados por Branthia están establecidos en Estados Unidos o utilizan infraestructuras y subencargados situados fuera del Espacio Económico Europeo.</P>
+        <P>En particular:</P>
+        <UL items={[
+          "Vercel puede realizar tratamientos o transferencias internacionales conforme a su contrato de tratamiento de datos.",
+          "Resend almacena datos de clientes en Estados Unidos.",
+          "Microsoft 365 está sujeto a los compromisos aplicables a sus servicios europeos, aunque determinados datos técnicos, de soporte o necesarios para operar servicios globales pueden ser tratados fuera de la Unión Europea o del Espacio Económico Europeo.",
+        ]} />
+        <P>Cuando exista una transferencia internacional, Branthia comprobará que se aplique alguno de los mecanismos legalmente reconocidos, como:</P>
+        <UL items={[
+          "Una decisión de adecuación.",
+          "La adhesión válida del proveedor al Marco de Privacidad de Datos UE-EE. UU., cuando resulte aplicable.",
+          "Cláusulas contractuales tipo aprobadas por la Comisión Europea.",
+          "Medidas contractuales, técnicas u organizativas adicionales cuando sean necesarias.",
+        ]} />
+        <P>Las personas interesadas pueden solicitar información adicional sobre las garantías aplicables escribiendo a <Mail />.</P>
+      </Section>
+
+      <Section n="10" title="Google Analytics y analítica web">
+        <P>En la fecha de esta versión, Google Analytics no forma parte del tratamiento descrito como activo en esta política.</P>
+        <P>Antes de activar Google Analytics u otra herramienta de medición no estrictamente necesaria, Branthia deberá:</P>
+        <UL items={[
+          "Configurar un mecanismo válido de consentimiento.",
+          "Bloquear la herramienta hasta que la persona acepte.",
+          "Permitir aceptar, rechazar y configurar.",
+          "Actualizar la Política de Cookies.",
+          "Actualizar esta Política de Privacidad.",
+          "Determinar la configuración, datos, conservación, destinatarios y transferencias reales.",
+        ]} />
+        <P>El uso futuro de herramientas analíticas no se entenderá autorizado por la mera navegación por el Sitio Web.</P>
+      </Section>
+
+      <Section n="11" title="Cookies y tecnologías similares">
+        <P>La información sobre cookies, almacenamiento local, identificadores y tecnologías similares se encuentra en la <a href="/cookies" style={{ color: "var(--fg)" }}>Política de Cookies</a>.</P>
+        <P>Las tecnologías no necesarias solo se activarán cuando exista una base válida y, cuando resulte exigible, después de obtener el consentimiento.</P>
+        <P>La persona usuaria podrá retirar o modificar su elección mediante el mecanismo habilitado en el Sitio Web.</P>
+      </Section>
+
+      <Section n="12" title="Decisiones automatizadas y elaboración de perfiles">
+        <P>Branthia no adopta decisiones automatizadas con efectos jurídicos o efectos significativamente similares sobre las personas a partir de los datos enviados mediante el formulario.</P>
+        <P>El formulario no se utiliza para evaluar automáticamente la solvencia, idoneidad, comportamiento o características personales de quienes contactan.</P>
+        <P>Si esta situación cambia, Branthia realizará el análisis correspondiente y actualizará esta política antes de iniciar el tratamiento.</P>
+      </Section>
+
+      <Section n="13" title="Seguridad">
+        <P>Branthia aplicará medidas técnicas y organizativas apropiadas atendiendo a la naturaleza de los datos, el contexto, los sistemas utilizados y los riesgos previsibles.</P>
+        <P>Estas medidas incluyen, según corresponda:</P>
+        <UL items={[
+          "Comunicaciones cifradas mediante HTTPS.",
+          "Control de accesos.",
+          "Autenticación multifactor en cuentas críticas.",
+          "Uso de credenciales individuales.",
+          "Restricción de privilegios.",
+          "Protección de claves y secretos mediante variables de entorno.",
+          "Actualización de sistemas y dependencias.",
+          "Copias de seguridad.",
+          "Medidas contra abuso del formulario.",
+          "Validación de datos en el servidor.",
+          "Limitación y revisión de logs.",
+          "Procedimientos de gestión de incidentes.",
+          "Revisión periódica de proveedores y accesos.",
+        ]} />
+        <P>Ningún sistema puede garantizar una seguridad absoluta. Branthia revisará las medidas cuando cambien los riesgos, proveedores o funcionalidades.</P>
+      </Section>
+
+      <Section n="14" title="Derechos de las personas interesadas">
+        <P>Las personas interesadas pueden ejercer, cuando proceda, los siguientes derechos:</P>
+        <UL items={[
+          <span><strong>Acceso:</strong> conocer qué datos trata Branthia y obtener una copia.</span>,
+          <span><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</span>,
+          <span><strong>Supresión:</strong> solicitar la eliminación de los datos cuando corresponda.</span>,
+          <span><strong>Oposición:</strong> oponerse a tratamientos basados en interés legítimo o al marketing directo.</span>,
+          <span><strong>Limitación:</strong> solicitar que se restrinja temporalmente el tratamiento.</span>,
+          <span><strong>Portabilidad:</strong> recibir determinados datos en un formato estructurado o solicitar su transmisión a otro responsable cuando resulte aplicable.</span>,
+          <span><strong>Retirada del consentimiento:</strong> retirar en cualquier momento un consentimiento previamente otorgado.</span>,
+          <span><strong>No ser objeto de decisiones exclusivamente automatizadas:</strong> cuando concurran los requisitos legales.</span>,
+        ]} />
+        <P>Para ejercer estos derechos puede escribirse a <Mail />.</P>
+        <P>La solicitud deberá indicar el derecho que se desea ejercer y aportar información suficiente para identificar a la persona solicitante y localizar sus datos.</P>
+        <P>Branthia podrá solicitar información adicional cuando existan dudas razonables sobre la identidad, evitando pedir documentación excesiva.</P>
+        <P>La persona interesada también puede presentar una reclamación ante la Agencia Española de Protección de Datos si considera que el tratamiento no se ajusta a la normativa aplicable.</P>
+      </Section>
+
+      <Section n="15" title="Menores">
+        <P>El Sitio Web y los servicios de Branthia están dirigidos a empresas, profesionales y organizaciones.</P>
+        <P>Branthia no pretende recoger deliberadamente datos de menores mediante el formulario. Cuando detecte que se han facilitado datos de un menor sin una justificación adecuada, adoptará medidas razonables para eliminarlos.</P>
+      </Section>
+
+      <Section n="16" title="Enlaces a Athria, Cohexia y otros sitios">
+        <P>El Sitio Web puede contener enlaces a Athria, Cohexia u otros sitios y plataformas.</P>
+        <P>Cuando la persona abandona {EMPRESA.web} y accede a otro dominio, el tratamiento realizado en ese sitio se regirá por su propia política de privacidad.</P>
+        <P>La documentación legal de cada producto deberá identificar correctamente al responsable, sus tratamientos, proveedores y condiciones.</P>
+        <P>Cuando exista intercambio de datos, inicio de sesión común, seguimiento entre dominios o cualquier integración entre Branthia y esos sitios, deberá analizarse específicamente e informarse antes de activarlo.</P>
+      </Section>
+
+      <Section n="17" title="Cambios en esta política">
+        <P>Branthia podrá actualizar esta Política de Privacidad cuando se produzcan:</P>
+        <UL items={[
+          "Cambios normativos.",
+          "Nuevas finalidades.",
+          "Nuevos formularios.",
+          "Cambios de proveedores.",
+          "Nuevas herramientas de analítica o marketing.",
+          "Cambios en las transferencias internacionales.",
+          "Nuevos productos o integraciones.",
+          "Modificaciones relevantes en la actividad.",
+        ]} />
+        <P>La versión actualizada será aplicable desde su publicación. Cuando el cambio afecte materialmente a un tratamiento basado en consentimiento, Branthia solicitará una nueva elección cuando resulte necesario.</P>
+      </Section>
+
+      <P style={{ color: "var(--muted)" }}>© 2026 {EMPRESA.nombre}</P>
     </>
   );
 }
@@ -420,7 +778,7 @@ function Cookies() {
 // revisa de verdad, no cuando se toca cualquier otro.
 const DOCS = {
   aviso:      { eyebrow: "Legal", title: "Aviso legal.",            Comp: AvisoLegal, actualizado: "22 de julio de 2026", version: "1.0" },
-  privacidad: { eyebrow: "Legal", title: "Política de privacidad.", Comp: Privacidad, actualizado: "16 de julio de 2026" },
+  privacidad: { eyebrow: "Legal", title: "Política de privacidad.", Comp: Privacidad, actualizado: "23 de julio de 2026", version: "1.0" },
   cookies:    { eyebrow: "Legal", title: "Política de cookies.",    Comp: Cookies,    actualizado: "16 de julio de 2026" },
 };
 
