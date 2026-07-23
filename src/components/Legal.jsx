@@ -173,6 +173,7 @@ function CookieDeclaration() {
     s.src = `https://consent.cookiebot.com/${CBID}/cd.js`;
     s.type = "text/javascript";
     s.async = true;
+    s.setAttribute("data-culture", "ES"); // si no, Cookiebot la sirve en inglés
     host.appendChild(s);
   }, []);
   return <div ref={ref} style={{ margin: "0 0 16px", maxWidth: 760 }} />;
