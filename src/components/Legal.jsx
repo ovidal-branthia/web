@@ -126,10 +126,6 @@ function Footer() {
           <a href="/" style={{ color: "var(--muted)", textDecoration: "none" }}>Inicio</a>
           <a href="/privacidad" style={{ color: "var(--muted)", textDecoration: "none" }}>Privacidad</a>
           <a href="/cookies" style={{ color: "var(--muted)", textDecoration: "none" }}>Cookies</a>
-          <button type="button" onClick={() => window.dispatchEvent(new Event("branthia:open-cookies"))}
-            style={{ appearance: "none", border: "none", background: "none", padding: 0, cursor: "pointer", font: "inherit", color: "var(--muted)" }}>
-            Preferencias de cookies
-          </button>
           <a href="/legal" style={{ color: "var(--muted)", textDecoration: "none" }}>Aviso legal</a>
         </div>
       </div>
