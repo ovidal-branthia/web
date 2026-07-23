@@ -704,7 +704,8 @@ function Privacidad() {
         <P>Para prestar el servicio pueden tratarse identificadores online, datos técnicos e información sobre la interacción con el Sitio Web.</P>
         <PL label="Finalidad">elaborar estadísticas de uso, conocer el funcionamiento del Sitio Web y detectar posibles mejoras.</PL>
         <PL label="Base jurídica">consentimiento de la persona usuaria.</PL>
-        <P>Google Analytics permanece bloqueado hasta que la persona acepta la categoría de cookies estadísticas o analíticas mediante Cookiebot. Rechazar las cookies analíticas no impide acceder al Sitio Web ni utilizar el formulario de contacto.</P>
+        <P>Google Analytics permanece bloqueado mientras la persona usuaria no acepte la categoría de cookies estadísticas o analíticas mediante Cookiebot. Antes de dicha aceptación, Google Analytics no carga sus etiquetas, no instala cookies analíticas ni envía datos de medición a Google.</P>
+        <P>La medición analítica solo se activa después de obtener el consentimiento. Rechazar las cookies analíticas no impide acceder al Sitio Web ni utilizar el formulario de contacto.</P>
         <P>Branthia utiliza Google Tag Manager para gestionar técnicamente la etiqueta de Google Analytics. Google Tag Manager no se utiliza como una finalidad independiente de seguimiento.</P>
         <P>La propiedad de Google Analytics está configurada con un periodo de conservación de 14 meses para los datos a nivel de usuario y evento.</P>
         <P>Branthia mantiene desactivadas inicialmente:</P>
@@ -866,7 +867,7 @@ function Cookies() {
             "Posibles errores o problemas de navegación.",
           ]} />
           <P>Google Analytics puede utilizar identificadores y cookies propias, como <code style={{ fontFamily: '"JetBrains Mono", ui-monospace, monospace', fontSize: 14 }}>_ga</code> y otras cookies asociadas a la propiedad configurada.</P>
-          <P>Google Analytics permanece bloqueado hasta que la persona usuaria acepta expresamente las cookies estadísticas o analíticas mediante Cookiebot.</P>
+          <P>Google Analytics permanece bloqueado mientras la persona usuaria no acepte expresamente las cookies estadísticas o analíticas mediante Cookiebot. Antes de dicha aceptación, la etiqueta de Google Analytics no se carga, no instala cookies analíticas ni envía datos de medición a Google.</P>
           <P>La mera navegación, el desplazamiento por la página, el cierre del banner o el envío del formulario no se consideran formas de consentimiento.</P>
           <P>Branthia utiliza Google Analytics exclusivamente con fines estadísticos. Inicialmente mantiene desactivadas Google Signals, la personalización publicitaria, la vinculación con Google Ads, el remarketing y la medición entre dominios.</P>
         </Sub>
