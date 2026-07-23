@@ -689,17 +689,35 @@ function Privacidad() {
       </Section>
 
       <Section n="10" title="Google Analytics y analítica web">
-        <P>En la fecha de esta versión, Google Analytics no forma parte del tratamiento descrito como activo en esta política.</P>
-        <P>Antes de activar Google Analytics u otra herramienta de medición no estrictamente necesaria, Branthia deberá:</P>
+        <P>Branthia utiliza Google Analytics 4, servicio proporcionado por Google Ireland Limited, para obtener estadísticas sobre el uso y funcionamiento del Sitio Web.</P>
+        <P>Google Analytics permite analizar, entre otros aspectos:</P>
         <UL items={[
-          "Configurar un mecanismo válido de consentimiento.",
-          "Bloquear la herramienta hasta que la persona acepte.",
-          "Permitir aceptar, rechazar y configurar.",
-          "Actualizar la Política de Cookies.",
-          "Actualizar esta Política de Privacidad.",
-          "Determinar la configuración, datos, conservación, destinatarios y transferencias reales.",
+          "Las páginas visitadas.",
+          "El número y duración aproximada de las sesiones.",
+          "Las interacciones realizadas con el Sitio Web.",
+          "El tipo general de dispositivo.",
+          "El navegador y sistema operativo.",
+          "La zona geográfica aproximada.",
+          "La fuente general desde la que se accede.",
+          "Posibles errores o problemas de navegación.",
         ]} />
-        <P>El uso futuro de herramientas analíticas no se entenderá autorizado por la mera navegación por el Sitio Web.</P>
+        <P>Para prestar el servicio pueden tratarse identificadores online, datos técnicos e información sobre la interacción con el Sitio Web.</P>
+        <PL label="Finalidad">elaborar estadísticas de uso, conocer el funcionamiento del Sitio Web y detectar posibles mejoras.</PL>
+        <PL label="Base jurídica">consentimiento de la persona usuaria.</PL>
+        <P>Google Analytics permanece bloqueado hasta que la persona acepta la categoría de cookies estadísticas o analíticas mediante Cookiebot. Rechazar las cookies analíticas no impide acceder al Sitio Web ni utilizar el formulario de contacto.</P>
+        <P>Branthia utiliza Google Tag Manager para gestionar técnicamente la etiqueta de Google Analytics. Google Tag Manager no se utiliza como una finalidad independiente de seguimiento.</P>
+        <P>La propiedad de Google Analytics está configurada con un periodo de conservación de 14 meses para los datos a nivel de usuario y evento.</P>
+        <P>Branthia mantiene desactivadas inicialmente:</P>
+        <UL items={[
+          "Google Signals.",
+          "La personalización publicitaria.",
+          "La vinculación con Google Ads.",
+          "La medición entre dominios.",
+          "Las funciones de remarketing.",
+        ]} />
+        <P>Branthia no envía deliberadamente a Google Analytics nombres, direcciones de correo electrónico, contenido del formulario ni otra información destinada a identificar directamente a una persona.</P>
+        <P>La persona usuaria puede retirar su consentimiento en cualquier momento mediante la opción «Configurar cookies» disponible en el Sitio Web.</P>
+        <P>Google puede realizar tratamientos internacionales de datos conforme a los mecanismos y garantías indicados en sus condiciones aplicables. Puede solicitarse información adicional escribiendo a <Mail />.</P>
       </Section>
 
       <Section n="11" title="Cookies y tecnologías similares">
@@ -835,20 +853,22 @@ function Cookies() {
         </Sub>
 
         <Sub title="Google Analytics 4">
-          <P>Branthia utiliza o tiene previsto utilizar Google Analytics 4, servicio contratado con Google Ireland Limited, para obtener estadísticas agregadas sobre el uso del Sitio Web.</P>
-          <P>Google Analytics puede permitir conocer, entre otros datos:</P>
+          <P>Branthia utiliza Google Analytics 4, servicio proporcionado por Google Ireland Limited, para obtener estadísticas sobre el uso y funcionamiento del Sitio Web.</P>
+          <P>Google Analytics permite conocer, entre otros datos:</P>
           <UL items={[
-            "Páginas visitadas.",
-            "Duración aproximada de las sesiones.",
-            "Tipo general de dispositivo.",
-            "Navegador y sistema operativo.",
-            "País o zona geográfica aproximada.",
-            "Fuente general desde la que se accede al Sitio Web.",
-            "Interacciones realizadas con las páginas.",
-            "Errores o problemas de navegación.",
+            "Las páginas visitadas.",
+            "La duración aproximada de las sesiones.",
+            "Las interacciones realizadas con el Sitio Web.",
+            "El tipo general de dispositivo.",
+            "El navegador y sistema operativo.",
+            "La zona geográfica aproximada.",
+            "La fuente general desde la que se accede.",
+            "Posibles errores o problemas de navegación.",
           ]} />
           <P>Google Analytics puede utilizar identificadores y cookies propias, como <code style={{ fontFamily: '"JetBrains Mono", ui-monospace, monospace', fontSize: 14 }}>_ga</code> y otras cookies asociadas a la propiedad configurada.</P>
-          <P>Las etiquetas de Google Analytics permanecerán condicionadas a la elección de la persona usuaria. Branthia no utilizará la mera navegación, el desplazamiento por la página ni el cierre del banner como formas de consentimiento.</P>
+          <P>Google Analytics permanece bloqueado hasta que la persona usuaria acepta expresamente las cookies estadísticas o analíticas mediante Cookiebot.</P>
+          <P>La mera navegación, el desplazamiento por la página, el cierre del banner o el envío del formulario no se consideran formas de consentimiento.</P>
+          <P>Branthia utiliza Google Analytics exclusivamente con fines estadísticos. Inicialmente mantiene desactivadas Google Signals, la personalización publicitaria, la vinculación con Google Ads, el remarketing y la medición entre dominios.</P>
         </Sub>
       </Section>
 
@@ -876,9 +896,10 @@ function Cookies() {
         </Sub>
 
         <Sub n="4.3" title="Estadísticas o analíticas">
-          <P>Permiten obtener información sobre cómo se utiliza el Sitio Web con la finalidad de elaborar estadísticas, evaluar su funcionamiento y detectar posibles mejoras.</P>
-          <P>En esta categoría puede incluirse Google Analytics.</P>
-          <P>Las cookies analíticas permanecerán desactivadas hasta que la persona usuaria otorgue su consentimiento.</P>
+          <P>Estas tecnologías permiten obtener información sobre cómo se utiliza el Sitio Web con la finalidad de elaborar estadísticas, evaluar su funcionamiento y detectar posibles mejoras.</P>
+          <P>En esta categoría se incluye Google Analytics 4.</P>
+          <P>Las cookies estadísticas o analíticas permanecen desactivadas hasta que la persona usuaria otorga su consentimiento.</P>
+          <P>Si la persona rechaza esta categoría, Google Analytics no debe instalar cookies ni realizar la medición analítica ordinaria de su navegación.</P>
         </Sub>
 
         <Sub n="4.4" title="Marketing">
