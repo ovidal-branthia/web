@@ -1,4 +1,6 @@
 ---
+import CookieConsent from '../components/CookieConsent.jsx';
+
 const {
   title = 'Branthia — Consultora de IA & estudio de producto',
   description = 'Consultora de IA aplicada y estudio de producto. Del comité de dirección a producción: automatización, sistemas agénticos, producto digital y marca.',
@@ -10,6 +12,36 @@ const {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Consent Mode v2 — se ejecuta ANTES de GTM: todo denegado por defecto y
+     se restaura la elección previa de forma síncrona, si existe. -->
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  var __branthiaConsent = null;
+  try { __branthiaConsent = JSON.parse(localStorage.getItem('branthia.consent.v1')); } catch (e) {}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    personalization_storage: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+  if (__branthiaConsent) {
+    var a = __branthiaConsent.analytics ? 'granted' : 'denied';
+    var m = __branthiaConsent.marketing ? 'granted' : 'denied';
+    gtag('consent', 'update', {
+      analytics_storage: a,
+      ad_storage: m,
+      ad_user_data: m,
+      ad_personalization: m,
+      personalization_storage: m
+    });
+  }
+</script>
 
 <!-- Google Tag Manager -->
 <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -68,5 +100,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <slot />
+<CookieConsent client:load />
 </body>
 </html>
