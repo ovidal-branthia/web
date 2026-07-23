@@ -4,10 +4,9 @@ import { BranthiaLogo } from "./Logo.jsx";
 // Páginas legales (Aviso legal, Privacidad, Cookies). Un solo motor;
 // recibe la prop `doc` = 'aviso' | 'privacidad' | 'cookies'. Reutiliza Logo.jsx.
 //
-// Aviso legal v1.0 (22/07/2026) y Política de privacidad v1.0 (23/07/2026):
-// textos definitivos, con datos registrales completos.
-// ⚠ Cookies: sigue siendo plantilla; pendiente de redacción/revisión legal al
-//   mismo nivel que los otros dos.
+// Los tres documentos están en su versión definitiva v1.0: Aviso legal
+// (22/07/2026), Privacidad y Cookies (23/07/2026), con datos registrales
+// completos. La declaración de cookies del §5 la genera Cookiebot al vuelo.
 
 const T = {
   bg: "#F1ECE2", fg: "#0A0A0A",
@@ -156,6 +155,44 @@ function Sub({ n, title, children }) {
       </h3>
       {children}
     </div>
+  );
+}
+
+// Cookiebot: identificador detectado en el contenedor de GTM en producción.
+const CBID = "59741f26-2b70-4244-a9d2-616253e06b14";
+
+// Declaración dinámica de cookies (§5). Cookiebot la genera al vuelo, así que
+// hay que inyectar el <script>: React no ejecuta scripts vía JSX.
+function CookieDeclaration() {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const host = ref.current;
+    if (!host || host.querySelector("script")) return;
+    const s = document.createElement("script");
+    s.id = "CookieDeclaration";
+    s.src = `https://consent.cookiebot.com/${CBID}/cd.js`;
+    s.type = "text/javascript";
+    s.async = true;
+    host.appendChild(s);
+  }, []);
+  return <div ref={ref} style={{ margin: "0 0 16px", maxWidth: 760 }} />;
+}
+
+// Reapertura del panel de Cookiebot (§9), para modificar o retirar la elección.
+function ConfigurarCookies() {
+  return (
+    <button
+      type="button"
+      onClick={() => window.Cookiebot && window.Cookiebot.renew()}
+      style={{
+        appearance: "none", cursor: "pointer",
+        fontFamily: "var(--display)", fontSize: 15, fontWeight: 600,
+        color: "var(--bg)", background: "var(--fg)", border: "1px solid var(--fg)",
+        padding: "11px 20px", borderRadius: 999, margin: "4px 0 20px",
+      }}
+    >
+      Configurar cookies
+    </button>
   );
 }
 
@@ -750,26 +787,232 @@ function Privacidad() {
 function Cookies() {
   return (
     <>
-      <Section n="1" title="¿Qué son las cookies?">
-        <P>Las cookies son pequeños archivos de texto que los sitios web almacenan en tu dispositivo cuando los visitas. Sirven, entre otras cosas, para que el sitio funcione correctamente, recordar tus preferencias o analizar el uso que se hace de él.</P>
-      </Section>
-      <Section n="2" title="Tipos de cookies que utilizamos">
+      <Section n="1" title="Responsable del sitio web">
+        <P>El responsable del uso de cookies y tecnologías similares en {EMPRESA.web}, en adelante, el “Sitio Web”, es:</P>
         <UL items={[
-          <span><strong>Técnicas o necesarias:</strong> imprescindibles para el funcionamiento del Sitio Web. No requieren consentimiento.</span>,
-          <span><strong>Analíticas o de medición:</strong> permiten analizar de forma agregada el uso del Sitio Web para mejorarlo. Requieren tu consentimiento.</span>,
-          <span><strong>De terceros:</strong> en su caso, servicios externos (por ejemplo, fuentes tipográficas). Requieren tu consentimiento cuando no sean estrictamente necesarias.</span>,
+          <span><strong>Responsable:</strong> {EMPRESA.nombre}</span>,
+          <span><strong>NIF:</strong> {EMPRESA.cif}.</span>,
+          <span><strong>Domicilio social:</strong> {EMPRESA.domicilio}.</span>,
+          <span><strong>Correo electrónico:</strong> <Mail />.</span>,
         ]} />
-        <P>Actualmente {EMPRESA.web} utiliza únicamente cookies técnicas necesarias. Si en el futuro se incorporan cookies analíticas o de terceros, se solicitará tu consentimiento previo y se detallarán en esta política.</P>
+        <P>Esta Política de Cookies debe leerse conjuntamente con el <a href="/legal" style={{ color: "var(--fg)" }}>Aviso Legal</a> y la <a href="/privacidad" style={{ color: "var(--fg)" }}>Política de Privacidad</a> del Sitio Web.</P>
       </Section>
-      <Section n="3" title="Relación de cookies">
-        <P>Se detallará el listado concreto de cookies (nombre, titular, finalidad y duración) cuando se incorporen servicios de medición o de terceros que las requieran.</P>
+
+      <Section n="2" title="Qué son las cookies">
+        <P>Las cookies son pequeños archivos que un sitio web puede almacenar en el navegador o dispositivo de una persona cuando lo visita.</P>
+        <P>Las cookies pueden permitir, entre otras funciones:</P>
+        <UL items={[
+          "Mantener el funcionamiento técnico del sitio.",
+          "Recordar preferencias.",
+          "Conservar la elección realizada sobre el uso de cookies.",
+          "Obtener estadísticas sobre la navegación.",
+          "Medir el rendimiento y uso de las páginas.",
+          "Habilitar funcionalidades proporcionadas por terceros.",
+        ]} />
+        <P>Esta política también se aplica, cuando corresponda, a tecnologías similares que permitan almacenar o acceder a información en el dispositivo, como el almacenamiento local, píxeles, etiquetas, identificadores y otros mecanismos de seguimiento.</P>
       </Section>
-      <Section n="4" title="Gestión y desactivación">
-        <P>Puedes permitir, bloquear o eliminar las cookies instaladas en tu dispositivo desde la configuración de tu navegador (Chrome, Firefox, Safari, Edge, entre otros). Ten en cuenta que la desactivación de algunas cookies puede afectar al correcto funcionamiento del Sitio Web. Cuando esté disponible, también podrás gestionar tus preferencias desde el panel de configuración de cookies del propio sitio.</P>
+
+      <Section n="3" title="Qué tecnologías utiliza Branthia">
+        <P>Branthia utiliza actualmente las siguientes herramientas relacionadas con la gestión de etiquetas, consentimiento y medición:</P>
+
+        <Sub title="Cookiebot">
+          <P>Branthia utiliza Cookiebot CMP, servicio de Usercentrics A/S, para:</P>
+          <UL items={[
+            "Mostrar el aviso de cookies.",
+            "Permitir aceptar, rechazar o configurar las categorías no necesarias.",
+            "Recordar la elección de la persona usuaria.",
+            "Permitir modificar o retirar posteriormente el consentimiento.",
+            "Facilitar un inventario actualizado de las cookies y tecnologías detectadas.",
+          ]} />
+          <P>Cookiebot puede utilizar una cookie estrictamente necesaria para conservar el estado del consentimiento. Esta cookie no se utiliza para medir la navegación ni para enviar publicidad.</P>
+        </Sub>
+
+        <Sub title="Google Tag Manager">
+          <P>Branthia utiliza Google Tag Manager como sistema de gestión y despliegue de etiquetas.</P>
+          <P>Google Tag Manager permite administrar técnicamente otros scripts o herramientas, pero las cookies y tratamientos concretos dependen de las etiquetas que estén configuradas dentro del contenedor.</P>
+          <P>La utilización de Google Tag Manager no autoriza por sí sola la activación de Google Analytics u otras herramientas no necesarias.</P>
+        </Sub>
+
+        <Sub title="Google Analytics 4">
+          <P>Branthia utiliza o tiene previsto utilizar Google Analytics 4, servicio contratado con Google Ireland Limited, para obtener estadísticas agregadas sobre el uso del Sitio Web.</P>
+          <P>Google Analytics puede permitir conocer, entre otros datos:</P>
+          <UL items={[
+            "Páginas visitadas.",
+            "Duración aproximada de las sesiones.",
+            "Tipo general de dispositivo.",
+            "Navegador y sistema operativo.",
+            "País o zona geográfica aproximada.",
+            "Fuente general desde la que se accede al Sitio Web.",
+            "Interacciones realizadas con las páginas.",
+            "Errores o problemas de navegación.",
+          ]} />
+          <P>Google Analytics puede utilizar identificadores y cookies propias, como <code style={{ fontFamily: '"JetBrains Mono", ui-monospace, monospace', fontSize: 14 }}>_ga</code> y otras cookies asociadas a la propiedad configurada.</P>
+          <P>Las etiquetas de Google Analytics permanecerán condicionadas a la elección de la persona usuaria. Branthia no utilizará la mera navegación, el desplazamiento por la página ni el cierre del banner como formas de consentimiento.</P>
+        </Sub>
       </Section>
-      <Section n="5" title="Cambios en la Política de Cookies">
-        <P>{EMPRESA.nombre} se reserva el derecho a modificar esta Política de Cookies para adaptarla a nuevos requisitos legales o técnicos. Te recomendamos revisarla periódicamente.</P>
+
+      <Section n="4" title="Categorías de cookies">
+        <P>Las cookies y tecnologías detectadas se clasifican en las siguientes categorías:</P>
+
+        <Sub n="4.1" title="Necesarias">
+          <P>Son imprescindibles para el funcionamiento, seguridad y prestación de las funciones expresamente solicitadas por la persona usuaria.</P>
+          <P>Pueden utilizarse, por ejemplo, para:</P>
+          <UL items={[
+            "Cargar correctamente el Sitio Web.",
+            "Proteger formularios y sistemas.",
+            "Distribuir el tráfico.",
+            "Prevenir abusos.",
+            "Conservar la elección sobre cookies.",
+            "Mantener funciones técnicas esenciales.",
+          ]} />
+          <P>Estas tecnologías no se utilizan para elaborar perfiles comerciales ni para medir la navegación con fines analíticos.</P>
+          <P>Las cookies estrictamente necesarias no pueden desactivarse desde el panel cuando su funcionamiento sea imprescindible. La persona usuaria puede bloquearlas mediante su navegador, aunque algunas partes del Sitio Web podrían dejar de funcionar correctamente.</P>
+        </Sub>
+
+        <Sub n="4.2" title="Preferencias">
+          <P>Permiten recordar determinadas elecciones o características de la navegación que no son estrictamente necesarias.</P>
+          <P>Branthia no activará esta categoría mientras no exista una funcionalidad que la requiera y aparezca correctamente identificada en el inventario de cookies.</P>
+        </Sub>
+
+        <Sub n="4.3" title="Estadísticas o analíticas">
+          <P>Permiten obtener información sobre cómo se utiliza el Sitio Web con la finalidad de elaborar estadísticas, evaluar su funcionamiento y detectar posibles mejoras.</P>
+          <P>En esta categoría puede incluirse Google Analytics.</P>
+          <P>Las cookies analíticas permanecerán desactivadas hasta que la persona usuaria otorgue su consentimiento.</P>
+        </Sub>
+
+        <Sub n="4.4" title="Marketing">
+          <P>Permiten realizar seguimiento de la navegación con fines publicitarios, crear perfiles, medir campañas promocionales o mostrar contenidos personalizados.</P>
+          <P>Branthia no utiliza actualmente cookies de publicidad comportamental.</P>
+          <P>Si esta situación cambia, estas tecnologías se mantendrán desactivadas hasta obtener el consentimiento correspondiente y se actualizarán previamente esta política, el banner y el inventario de proveedores.</P>
+        </Sub>
+
+        <Sub n="4.5" title="No clasificadas">
+          <P>Son tecnologías detectadas cuya finalidad todavía no ha podido determinarse.</P>
+          <P>Branthia revisará las tecnologías no clasificadas antes de autorizar su uso. Una cookie no debe tratarse como necesaria únicamente porque su finalidad todavía sea desconocida.</P>
+        </Sub>
       </Section>
+
+      <Section n="5" title="Inventario actualizado de cookies y tecnologías">
+        <P>El siguiente inventario se genera y actualiza mediante el escaneo de Cookiebot.</P>
+        <P>La declaración indica, según la información detectada y clasificada:</P>
+        <UL items={[
+          "Nombre de la cookie o tecnología.",
+          "Proveedor.",
+          "Finalidad.",
+          "Duración.",
+          "Tipo de almacenamiento.",
+          "Categoría.",
+          "Dominio desde el que se instala.",
+        ]} />
+        <P><strong>Declaración de cookies:</strong></P>
+        <CookieDeclaration />
+        <P>El inventario automático debe revisarse periódicamente. La clasificación proporcionada por una herramienta técnica no sustituye la comprobación de la finalidad real, la configuración de las etiquetas y el momento en que se activan.</P>
+      </Section>
+
+      <Section n="6" title="Base jurídica">
+        <P>Las cookies y tecnologías estrictamente necesarias se utilizan para permitir el funcionamiento y la prestación de las funciones solicitadas en el Sitio Web.</P>
+        <P>Las cookies de preferencias no necesarias, analíticas y de marketing solo se utilizarán cuando la persona usuaria haya otorgado previamente su consentimiento mediante el mecanismo habilitado.</P>
+        <P>Cuando una tecnología permita tratar datos personales, dicho tratamiento se basará en el consentimiento para la finalidad seleccionada, salvo que resulte aplicable otra base jurídica y exista una excepción válida al requisito de consentimiento.</P>
+        <P>La persona usuaria puede retirar el consentimiento en cualquier momento sin que ello afecte a la licitud del tratamiento realizado con anterioridad.</P>
+      </Section>
+
+      <Section n="7" title="Cómo se solicita el consentimiento">
+        <P>En la primera visita, Cookiebot muestra un panel que permite:</P>
+        <UL items={[
+          "Aceptar las categorías no necesarias.",
+          "Rechazar las categorías no necesarias.",
+          "Configurar las categorías disponibles.",
+        ]} />
+        <P>Las opciones de aceptar y rechazar deben presentarse de manera visible y comparable.</P>
+        <P>Las categorías no necesarias permanecerán desactivadas por defecto. No se utilizarán casillas previamente marcadas ni se considerará que existe consentimiento por seguir navegando, desplazarse por la página o cerrar el banner.</P>
+        <P>La persona usuaria puede elegir de forma separada las categorías disponibles, salvo las cookies estrictamente necesarias.</P>
+      </Section>
+
+      <Section n="8" title="Duración de la elección">
+        <P>Branthia conservará la elección sobre cookies durante un máximo de 12 meses.</P>
+        <P>Transcurrido ese periodo, podrá solicitarse nuevamente el consentimiento.</P>
+        <P>También podrá solicitarse una nueva elección antes de ese plazo cuando:</P>
+        <UL items={[
+          "Cambien las finalidades.",
+          "Se incorporen nuevos proveedores.",
+          "Se añadan nuevas categorías.",
+          "Se modifique sustancialmente la configuración.",
+          "No sea posible acreditar la elección anterior.",
+          "Lo requiera un cambio normativo o de criterio aplicable.",
+        ]} />
+        <P>La duración de cada cookie concreta puede ser diferente y figura en la declaración dinámica incluida en esta política.</P>
+      </Section>
+
+      <Section n="9" title="Cómo modificar o retirar el consentimiento">
+        <P>La persona usuaria puede modificar o retirar su consentimiento en cualquier momento mediante el enlace o botón permanente:</P>
+        <ConfigurarCookies />
+        <P>Al retirar el consentimiento:</P>
+        <UL items={[
+          "Las etiquetas afectadas deben dejar de activarse para futuras visitas o interacciones.",
+          "Branthia dejará de realizar la medición correspondiente.",
+          "Podrán eliminarse las cookies existentes mediante el mecanismo habilitado o desde la configuración del navegador.",
+        ]} />
+        <P>La retirada debe ser tan sencilla como la aceptación.</P>
+      </Section>
+
+      <Section n="10" title="Configuración mediante el navegador">
+        <P>La persona usuaria también puede permitir, bloquear o eliminar cookies mediante la configuración de su navegador.</P>
+        <P>El procedimiento depende del navegador y dispositivo utilizados. El bloqueo general de cookies puede impedir que algunas funciones técnicas del Sitio Web funcionen correctamente.</P>
+        <P>La eliminación manual de cookies en el navegador no sustituye necesariamente la retirada del consentimiento mediante Cookiebot. Para que Branthia conozca y aplique la nueva elección, debe utilizarse preferentemente la opción “Configurar cookies” del Sitio Web.</P>
+      </Section>
+
+      <Section n="11" title="Proveedores">
+        <Sub title="Usercentrics A/S — Cookiebot">
+          <P>Cookiebot es un servicio de gestión del consentimiento proporcionado por Usercentrics A/S, con sede en Dinamarca.</P>
+          <P>Su finalidad en el Sitio Web es administrar y conservar técnicamente la elección de la persona usuaria y mantener la declaración de cookies.</P>
+        </Sub>
+        <Sub title="Google Ireland Limited — Google Tag Manager y Google Analytics">
+          <P>Google Tag Manager y Google Analytics son servicios contratados con Google Ireland Limited.</P>
+          <P>Google Analytics puede tratar datos técnicos, identificadores online e información sobre la interacción con el Sitio Web cuando la persona usuaria acepta las cookies analíticas.</P>
+          <P>Branthia configurará Google Analytics para limitar el tratamiento a la finalidad estadística definida y evitará enviar nombres, direcciones de correo, contenido de formularios u otra información que identifique directamente a una persona.</P>
+          <P>La configuración inicial deberá mantener desactivadas las funciones de publicidad, Google Signals, medición multidominio y vinculaciones con productos publicitarios, salvo que se realice una evaluación específica y se actualice la información facilitada.</P>
+        </Sub>
+      </Section>
+
+      <Section n="12" title="Transferencias internacionales">
+        <P>Algunos proveedores pueden tratar datos fuera del Espacio Económico Europeo o permitir accesos desde terceros países.</P>
+        <P>Cuando exista una transferencia internacional de datos personales, Branthia comprobará que se utilice un mecanismo reconocido por la normativa aplicable, como:</P>
+        <UL items={[
+          "Una decisión de adecuación.",
+          "La adhesión válida al Marco de Privacidad de Datos UE-EE. UU., cuando corresponda.",
+          "Cláusulas contractuales tipo.",
+          "Medidas contractuales, técnicas u organizativas adicionales cuando resulten necesarias.",
+        ]} />
+        <P>La información ampliada sobre proveedores, tratamientos y transferencias se encuentra en la <a href="/privacidad" style={{ color: "var(--fg)" }}>Política de Privacidad</a>.</P>
+      </Section>
+
+      <Section n="13" title="Tratamientos entre dominios">
+        <P>Los enlaces a Athria, Cohexia u otros dominios no implican por sí mismos que se compartan cookies o identificadores entre esas páginas y {EMPRESA.web}.</P>
+        <P>Cada sitio debe disponer de su propia configuración y documentación de cookies cuando opere de forma independiente.</P>
+        <P>Branthia no activará medición multidominio, identificadores compartidos ni seguimiento entre {EMPRESA.web}, Athria y Cohexia sin:</P>
+        <UL items={[
+          "Analizar previamente el flujo.",
+          "Configurar correctamente el consentimiento.",
+          "Informar de los dominios y finalidades.",
+          "Actualizar las políticas correspondientes.",
+        ]} />
+      </Section>
+
+      <Section n="14" title="Actualizaciones de esta política">
+        <P>Branthia revisará esta Política de Cookies cuando:</P>
+        <UL items={[
+          "Se añadan o eliminen etiquetas en Google Tag Manager.",
+          "Cambie la configuración de Cookiebot.",
+          "Se incorporen nuevas herramientas.",
+          "Cambien las finalidades.",
+          "Aparezcan tecnologías no clasificadas.",
+          "Cambien los proveedores o las transferencias.",
+          "Se modifique la normativa o el criterio aplicable.",
+        ]} />
+        <P>La fecha y versión se indicarán al comienzo del documento.</P>
+      </Section>
+
+      <P style={{ color: "var(--muted)" }}>© 2026 {EMPRESA.nombre}</P>
     </>
   );
 }
@@ -779,7 +1022,7 @@ function Cookies() {
 const DOCS = {
   aviso:      { eyebrow: "Legal", title: "Aviso legal.",            Comp: AvisoLegal, actualizado: "22 de julio de 2026", version: "1.0" },
   privacidad: { eyebrow: "Legal", title: "Política de privacidad.", Comp: Privacidad, actualizado: "23 de julio de 2026", version: "1.0" },
-  cookies:    { eyebrow: "Legal", title: "Política de cookies.",    Comp: Cookies,    actualizado: "16 de julio de 2026" },
+  cookies:    { eyebrow: "Legal", title: "Política de cookies.",    Comp: Cookies,    actualizado: "23 de julio de 2026", version: "1.0" },
 };
 
 function LegalPage({ doc: docKey = "aviso" }) {
